@@ -27,10 +27,10 @@ class ServerTool {
     return Response.json({
       message: option.message || 'Error',
       success: option.success || false,
-      status: option.status || 500,
+      status: option.status || 400,
       data: option.data || null
     }, {
-      status: option.status || 500
+      status: option.status || 400
     })
   }
   /**
