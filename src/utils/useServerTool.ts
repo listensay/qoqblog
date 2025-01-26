@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-export interface myResponseInterFace {
+export interface MyResponseInterface {
   message?: string;
   success?: boolean;
   data?: any;
@@ -13,7 +13,7 @@ class ServerTool {
   constructor() {
     this.request = null;
   }
-  responseSuccess(option: myResponseInterFace) {
+  responseSuccess(option: MyResponseInterface) {
     return Response.json({
       message: option.message || 'OK',
       success: option.success || true,
@@ -23,7 +23,7 @@ class ServerTool {
       status: 200
     })
   }
-  responseError(option: myResponseInterFace) {
+  responseError(option: MyResponseInterface) {
     return Response.json({
       message: option.message || 'Error',
       success: option.success || false,
@@ -50,6 +50,8 @@ class ServerTool {
     if (this.request === null) {
       return {}
     }
+
+    console.log(this.request)
 
     return await this.request.json()
   }
