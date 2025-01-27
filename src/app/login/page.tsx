@@ -5,13 +5,18 @@ import { useForm, hasLength } from '@mantine/form';
 import React, { memo } from 'react'
 import useRequest from '@/utils/myRequest'
 import { notifications } from '@mantine/notifications';
+import { setCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
+import { MyResponseInterface } from '@/utils/useServerTool';
 
 const page = memo(() => {
+  const router = useRouter()
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      username: "",
-      password: ""
+      username: "odr233",
+      password: "meng@2002"
     },
 
     validate: {
@@ -22,7 +27,7 @@ const page = memo(() => {
 
   const submit = async (e: any) => {
     const result = await useRequest.post('/v1/login', e)
-    if(result.data.success) {
+    if(result.success) {
       notifications.show({
         title: "登录成功",
         message: "欢迎回来",
@@ -31,7 +36,8 @@ const page = memo(() => {
         position: "bottom-center",
       })
     }
-    
+    router.push('/dashboard')
+    setCookie('token', result.data.token)
   }
 
   return (
