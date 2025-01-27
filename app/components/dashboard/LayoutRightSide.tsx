@@ -1,12 +1,13 @@
 "use client"
 
 import React, { memo, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../lib/hooks'
+import { useAppDispatch, useAppSelector } from '../../lib/hooks'
 import { getUserProfile } from '@/lib/features/users/userSilce'
 import { Button } from '@mantine/core'
 import { useFetchAuthLogout } from '@/service/user'
 import { notifications } from '@mantine/notifications'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const Page = memo(() => {
   const router = useRouter()
@@ -44,7 +45,8 @@ const Page = memo(() => {
       <p>Username: {profile.username || 'No username'}</p>
       <p>Email: {profile.email || 'No email'}</p>
       <p className='mb-2'>Nickname: {profile.nickname || 'No nickname'}</p>
-      <Button onClick={ e => logout() }>退出登录</Button>
+      <Button onClick={ () => logout() }>退出登录</Button>
+      <Link href='/dashboard/post'>posts</Link>
       {/* 其他字段 */}
     </div>
   )

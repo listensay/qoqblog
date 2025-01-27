@@ -38,8 +38,11 @@ const page = memo(() => {
   }
 
   return (
-    <div className='flex justify-center'>
+    <div className='flex justify-center items-center h-[100vh]'>
       <div className='w-96'>
+
+        <h1 className='text-center text-2xl font-bold'>登录</h1>
+
         <form onSubmit={ form.onSubmit((e) => { submit(e) }) }>
           <TextInput
             label="用户名"
@@ -56,7 +59,7 @@ const page = memo(() => {
             {...form.getInputProps('password')}
             type='password'
           />
-          <Group justify="flex-end" mt="md">
+          <Group mt="md">
             <Button type="submit">登录</Button>
           </Group>
         </form>

@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import '@/styles/nprogress.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/core/styles.css';
-import Menu from '@/components/Menu'
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import ProgressBar from "@/components/ProgressBar";
@@ -26,10 +25,9 @@ export default function RootLayout({ children }: Props) {
           className={`antialiased`}
         >
           <MantineProvider>
-            <Menu />
             <Notifications />
             <ProgressBar />
-            <div className="p-2 pt-0">{children}</div>
+            <div>{children}</div>
           </MantineProvider>
         </body>
       </html>

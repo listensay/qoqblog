@@ -1,9 +1,13 @@
 import { Button } from "@mantine/core";
+import Menu from '@/components/Menu'
 
 export default function Home() {
   return (
     <div>
-      <Button >12312</Button>
+      <Menu />
+      <div className="p-2">
+        <Button >12312</Button>
+      </div>
     </div>
   );
 }

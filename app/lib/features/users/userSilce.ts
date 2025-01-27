@@ -6,10 +6,20 @@ export const getUserProfile = createAsyncThunk('user/getUserProfile', async () =
   return result.data.profile
 });
 
+interface Profile {
+  username: string
+  email: string
+  nickname: string
+}
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    profile: null
+    profile: {
+      username: '',
+      email: '',
+      nickname: ''
+    } as Profile
   },
   reducers: {
   },
