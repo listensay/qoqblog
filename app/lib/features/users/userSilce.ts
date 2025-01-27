@@ -1,8 +1,8 @@
-import { useFechGetAuthProfile } from "@/service/user";
+import { useFetchGetAuthProfile } from "@/service/user";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getUserProfile = createAsyncThunk('user/getUserProfile', async () => {
-  const result = await useFechGetAuthProfile()
+  const result = await useFetchGetAuthProfile()
   return result.data.profile
 });
 
