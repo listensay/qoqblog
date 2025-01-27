@@ -1,6 +1,5 @@
 import { notifications } from "@mantine/notifications";
 import axios, { Axios, AxiosResponse } from "axios";
-import { getCookie } from "cookies-next";
 import { MyResponseInterface } from "./useServerTool";
 
 class useRequest {
@@ -15,10 +14,6 @@ class useRequest {
     this.axios.interceptors.request.use(
       // 请求之前做一些什么
       (config) => {
-        const token = getCookie("token") || "";
-        if (config.headers) {
-          config.headers["Authorization"] = `Bearer ${token}`;
-        }
         return config;
       },
       // 请求错误做一些什么

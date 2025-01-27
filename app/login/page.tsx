@@ -3,11 +3,9 @@
 import { Group, TextInput, Button } from '@mantine/core'
 import { useForm, hasLength } from '@mantine/form';
 import React, { memo } from 'react'
-import useRequest from '@/utils/myRequest'
+import useRequest from '../../utils/myRequest'
 import { notifications } from '@mantine/notifications';
-import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
-import { MyResponseInterface } from '@/utils/useServerTool';
 
 const page = memo(() => {
   const router = useRouter()
@@ -37,7 +35,6 @@ const page = memo(() => {
       })
     }
     router.push('/dashboard')
-    setCookie('token', result.data.token)
   }
 
   return (

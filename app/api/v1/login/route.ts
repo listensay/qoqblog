@@ -1,7 +1,7 @@
-import { useServerTool } from "@/utils/useServerTool";
+import { useServerTool } from "../../../../utils/useServerTool";
 import { NextRequest } from "next/server";
 import bcrypt from 'bcryptjs'
-import prisma from "@/utils/usePrisma";
+import prisma from "../../../../utils/usePrisma";
 const { compare } = bcrypt
 import jwt from 'jsonwebtoken'
 import { cookies } from "next/headers";
@@ -39,7 +39,12 @@ export async function POST(request: NextRequest) {
     })
 
     const cookieStore = await cookies()
-    cookieStore.set('token', token)
+    cookieStore.set('token', token, {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true,
+      maxAge: 60 * 60 * 24
+    })
 
     return useServerTool.responseSuccess({
       data: {

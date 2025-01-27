@@ -1,5 +1,5 @@
-import prisma from "@/utils/usePrisma";
-import { useServerTool } from "@/utils/useServerTool";
+import prisma from "../../../../utils/usePrisma";
+import { useServerTool } from "../../../../utils/useServerTool";
 import { NextRequest } from "next/server";
 import bcrypt from 'bcryptjs'
 const { hashSync } = bcrypt
