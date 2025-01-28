@@ -1,47 +1,45 @@
-"use client"
-
-import React, { memo, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../lib/hooks'
-import { getUserProfile } from '@/lib/features/users/userSilce'
-import { Button } from '@mantine/core'
-import { useFetchAuthLogout } from '@/service/user'
-import { notifications } from '@mantine/notifications'
-import { useRouter } from 'next/navigation'
+import React, { memo } from 'react'
 import Link from 'next/link'
 
+interface IMenu {
+  name: string,
+  icon: string,
+  path: string,
+}
+
 const Page = memo(() => {
-  const router = useRouter()
 
-  const dispatch = useAppDispatch()
-  const profile = useAppSelector(state => state.user.profile)
-
-  useEffect(() => {
-    // 使用 IIFE 处理异步操作
-    const fetchProfile = async () => {
-      await dispatch(getUserProfile())
+  const menu: IMenu[] = [
+    {
+      name: '仪表盘',
+      icon: 'home',
+      path: '/'
+    },
+    {
+      name: '文章',
+      icon: 'post',
+      path: '/post'
+    },
+    {
+      name: '代码生成',
+      icon: 'code',
+      path: '/code'
     }
-    fetchProfile()
-  }, [dispatch])
-
-  // 处理无数据状态
-  if (!profile) {
-    return <div>No profile available</div>
-  }
-
-  const logout = async () => {
-    await useFetchAuthLogout()
-    notifications.show({
-      title: '退出登录',
-      message: '退出登录成功',
-      color: 'blue',
-      position: 'bottom-center'
-    })
-    router.push('/')
-  }
+  ]
 
   return (
     <div>
-      我是菜单
+      <ul>
+        {
+          menu.map(item => {
+            return (
+              <li key={item.path}>
+                <Link href={ '/dashboard' + item.path }>{ item.name }</Link>
+              </li>
+            )
+          })
+        }
+      </ul>
     </div>
   )
 })
