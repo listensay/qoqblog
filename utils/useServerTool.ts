@@ -84,7 +84,8 @@ class ServerTool {
           email: true,
           avatar: true,
           createdAt: true,
-          updatedAt: true
+          updatedAt: true,
+          id: true
         }
       })
     } catch (error) {
