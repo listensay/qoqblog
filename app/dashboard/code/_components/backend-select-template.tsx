@@ -9,9 +9,14 @@ const BackendTemplate = memo((props: { data: any, useAuth: boolean }) => {
 import { NextRequest } from "next/server";
 import { useServerTool } from "~@/utils/useServerTool";
 import prisma from "~@/utils/usePrisma";
+import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
   useServerTool.setRequest(request)
+${
+  useAuth ? `
+    const cookieStore = await cookies()`: ''
+}
 
   try {
 ${
@@ -19,8 +24,10 @@ ${
     const user = await useServerTool.useAuth()
 
     if(!user) {
+      cookieStore.delete('token')
       return useServerTool.responseError({
-        message: "未登录"
+        message: "未登录",
+        status: 401
       })
     }
   `: ``
