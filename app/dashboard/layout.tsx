@@ -2,7 +2,6 @@
 
 import React, { memo } from 'react'
 import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import LayoutLeftSide from "@/components/dashboard/LayoutLeftSide"
 import LayoutRightSide from "@/components/dashboard/LayoutRightSide"
 
