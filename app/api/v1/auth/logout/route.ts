@@ -10,7 +10,8 @@ export async function POST(request: NextRequest) {
 
     if(!user) {
       return useServerTool.responseError({
-        message: "未登录"
+        message: "未登录",
+        status: 401
       })
     }
 
