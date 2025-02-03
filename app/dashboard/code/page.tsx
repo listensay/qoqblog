@@ -11,7 +11,7 @@ import ControlFrontend from './_components/control-frontend';
 const page = memo(() => {
   const [opened, { open, close }] = useDisclosure(false);
   const [tables, setTables] = useState([]);
-  const [columns, setColumns] = useState()
+  const [columns, setColumns] = useState({}) as any
   const [control, setControl] = useState('ui')
 
   useEffect(() => {
@@ -49,38 +49,49 @@ const page = memo(() => {
     )
   })
 
-  const controlChange = (e: any) => {
-    console.log(e)
+  const renderControl = () => {
+    return (
+      <>
+        <div className="main mt-4">
+          <SegmentedControl
+            value={control}
+            onChange={setControl}
+            data={[
+              { label: 'FrontEnd UI', value: 'ui' },
+              { label: 'FrontEnd API', value: 'frontend' },
+              { label: 'BackEnd API', value: 'backend' },
+            ]}
+          />
+
+          <div className="table-container">
+            {
+              control === 'ui' && <ControlUI data={ columns } />
+            }
+            {
+              control === 'backend' && <ControlBackend data={ columns } />
+            }
+            {
+              control === 'frontend' && <ControlFrontend data={ columns } />
+            }
+          </div>
+        </div>
+      </>
+    )
   }
+
 
   return (
     <div>
       <div className="header">
         <Button onClick={ open }>选择数据表</Button>
       </div>
-      <div className="main mt-4">
-        <SegmentedControl
-          value={control}
-          onChange={setControl}
-          data={[
-            { label: 'FrontEnd UI', value: 'ui' },
-            { label: 'FrontEnd API', value: 'frontend' },
-            { label: 'BackEnd API', value: 'backend' },
-          ]}
-        />
-
-        <div className="table-container">
-          {
-            control === 'ui' && <ControlUI data={ columns } />
-          }
-          {
-            control === 'backend' && <ControlBackend data={ columns } />
-          }
-          {
-            control === 'frontend' && <ControlFrontend data={ columns } />
-          }
-        </div>
-      </div>
+      {
+        columns.templateName && <h1 className='my-4 text-lg font-bold'>{columns.templateName}</h1>
+      }
+      {
+        // columns.length > 0 ? renderControl() : '请选择数据表'
+        columns.data ? renderControl() : '请选择数据表'
+      }
       <Modal opened={opened} onClose={close} title="选择数据表" centered size={ 'md' }>
         <Table striped>
           <Table.Thead>
