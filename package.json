@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "^7.16.1",
+    "@mantine/code-highlight": "^7.16.2",
+    "@mantine/core": "^7.16.2",
     "@mantine/form": "^7.16.1",
     "@mantine/hooks": "^7.16.1",
-    "@mantine/notifications": "^7.16.1",
+    "@mantine/notifications": "^7.16.2",
     "@prisma/client": "^6.2.1",
     "@reduxjs/toolkit": "^2.5.1",
+    "@tabler/icons-react": "^3.29.0",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",

@@ -1,7 +1,7 @@
-import { useServerTool } from "../../../../utils/useServerTool";
+import { useServerTool } from "~@/utils/useServerTool";
 import { NextRequest } from "next/server";
 import bcrypt from 'bcryptjs'
-import prisma from "../../../../utils/usePrisma";
+import prisma from "~@/utils/usePrisma";
 const { compare } = bcrypt
 import jwt from 'jsonwebtoken'
 import { cookies } from "next/headers";

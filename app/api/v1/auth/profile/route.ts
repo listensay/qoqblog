@@ -1,4 +1,4 @@
-import { useServerTool } from '../../../../../utils/useServerTool';
+import { useServerTool } from '~@/utils/useServerTool';
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest){

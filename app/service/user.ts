@@ -1,4 +1,4 @@
-import myRequest from "../../utils/myRequest"
+import myRequest from "~@/utils/myRequest"
 
 export const useFetchGetAuthProfile = () => {
   return myRequest.get('/v1/auth/profile')

@@ -1,11 +1,11 @@
 import { NextRequest } from "next/server";
 import { useServerTool } from "~@/utils/useServerTool";
-import { cookies } from "next/headers";
+import prisma from "~@/utils/usePrisma";
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     useServerTool.setRequest(request)
-    
+
     const user = await useServerTool.useAuth()
 
     if(!user) {
@@ -14,12 +14,19 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const cookieStore = await cookies()
-    cookieStore.delete('token')
+    const databseName = process.env.DATABASE_NAME
+
+    // 查询数据库所有表内容
+    const allTables = await prisma.$queryRaw`
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = ${databseName}
+    `
 
     return useServerTool.responseSuccess({
-      message: "退出成功"
+      data: allTables
     })
+
 
   } catch (error) {
     useServerTool.responseError({
