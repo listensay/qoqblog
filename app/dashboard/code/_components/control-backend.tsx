@@ -10,8 +10,19 @@ const backend = memo((props: { data: any }) => {
   const [useAuth, setUseAuth] = useState(true)
 
   return (
-    <div className='mt-4 flex'>
-      <Tabs defaultValue="query" orientation="vertical" color="violet" className='flex-1'>
+    <div className='mt-4'>
+      <div className='bg-white border rounded-md p-4 mb-4'>
+        <div className='text-lg font-bold mb-4'>请求设置</div>
+        <Checkbox
+          defaultChecked
+          label="需要用户验证"
+          color="red"
+          onChange={(e) => {
+            setUseAuth(e.currentTarget.checked)
+          }}
+        />
+      </div>
+      <Tabs defaultValue="query" orientation="vertical" color="violet" className='border'>
         <Tabs.List>
           <Tabs.Tab value="insert" leftSection={<IconDatabasePlus size={12} />}>
             添加数据
@@ -53,17 +64,6 @@ const backend = memo((props: { data: any }) => {
           <BackendSelectTemplate data={data} useAuth={ useAuth } />
         </Tabs.Panel>
       </Tabs>
-      <div className='bg-white w-96 rounded-md px-4'>
-        <div className='text-lg font-bold mb-4'>请求设置</div>
-        <Checkbox
-          defaultChecked
-          label="需要用户验证"
-          color="red"
-          onChange={(e) => {
-            setUseAuth(e.currentTarget.checked)
-          }}
-        />
-      </div>
     </div>
   )
 })

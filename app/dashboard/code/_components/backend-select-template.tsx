@@ -4,18 +4,22 @@ import { CodeHighlight } from '@mantine/code-highlight';
 const BackendTemplate = memo((props: { data: any, useAuth: boolean }) => {
 
   const { data, useAuth } = props
+  
+  const name = data.templateName.toLowerCase()
 
   const exampleCode = `
 import { NextRequest } from "next/server";
 import { useServerTool } from "~@/utils/useServerTool";
 import prisma from "~@/utils/usePrisma";
-import { cookies } from 'next/headers';
+${
+useAuth ? `import { cookies } from 'next/headers';`: ''
+}
 
 export async function GET(request: NextRequest) {
   useServerTool.setRequest(request)
 ${
   useAuth ? `
-    const cookieStore = await cookies()`: ''
+  const cookieStore = await cookies()`: ''
 }
 
   try {
@@ -46,7 +50,7 @@ ${
       })
     }
 
-    const links = await prisma.links.findMany({
+    const ${name}s = await prisma.${name}.findMany({
       skip: (Number(body.page) - 1) * Number(body.pageSize),
       take: Number(body.pageSize),
       orderBy: {
@@ -57,17 +61,17 @@ ${
       }
     })
 
-    if(!links) {
+    if(!${name}s) {
       return useServerTool.responseError({
-        message: "链接不存在"
+        message: "没有内容"
       })
     }
 
-    const total = await prisma.links.count()
+    const total = await prisma.${name}.count()
 
     return useServerTool.responseSuccess({
       data: {
-        links,
+        ${name}s,
         total
       }
     })
