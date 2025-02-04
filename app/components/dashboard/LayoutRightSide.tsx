@@ -1,8 +1,8 @@
 "use client"
 
 import React, { memo, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '@/lib/hooks'
-import { getUserProfile } from '@/lib/features/users/userSilce'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { getUserProfile } from '@/store/features/users'
 import { Button } from '@mantine/core'
 import { useFetchAuthLogout } from '@/service/user'
 import { notifications } from '@mantine/notifications'
