@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import "@/styles/globals.css";
-import '@/styles/nprogress.css';
+import "@/assets/styles/globals.css";
+import '@/assets/styles/nprogress.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/core/styles.css';
 import '@mantine/code-highlight/styles.css';
