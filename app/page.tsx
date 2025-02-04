@@ -1,17 +1,12 @@
-import { Button } from "@mantine/core";
-import Menu from '@/components/Menu'
-import Header from "./components/Header";
+import BlogList from "./components/BlogList";
+import HeaderLayout from "./components/HeaderLayout";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div>
-      {/* <Menu /> */}
-      <div className="container mx-auto">
-        <div className="mt-4">
-          <Header />
-        </div>
-        <Button >12312</Button>
-      </div>
+      <HeaderLayout>
+        <BlogList />
+      </HeaderLayout>
     </div>
   );
 }
