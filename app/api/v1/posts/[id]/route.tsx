@@ -10,7 +10,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const id = (await params).id
     const post = await prisma.post.findFirst({
       where: {
-        id: Number(id)
+        id: Number(id),
+        isDeleted: false
       }
     })
 
