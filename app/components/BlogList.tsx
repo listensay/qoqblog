@@ -1,7 +1,6 @@
 import React from "react";
 import { fetchGetPosts } from "@/service/posts";
-import { Pagination } from "@mantine/core";
-import Link from "next/link";
+import Navigateto from "@/components/Navigeto";
 
 // 使用 Server Components 获取数据
 async function fetchPosts(page: number, pageSize: number) {
@@ -49,12 +48,12 @@ const BlogList = async () => {
         {list.map((item: BlogListPost) => (
           <div key={item.id} className="mb-6">
             {/* 使用静态映射的随机颜色 */}
-            <Link
+            <Navigateto
               href={`/post/${item.id}`}
               className={`h-80 max-md:h-64 w-full flex items-center justify-center ${randomColor()} mb-4 rounded-lg text-white font-bold text-2xl max-md:text-lg`}
             >
               {item.title}
-            </Link>
+            </Navigateto>
             <div className="text-gray-500 text-sm">{item.description}</div>
           </div>
         ))}
