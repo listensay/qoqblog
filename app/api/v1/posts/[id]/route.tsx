@@ -21,6 +21,17 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       })
     }
 
+    await prisma.post.update({
+      where: {
+        id: Number(id)
+      },
+      data: {
+        views: {
+          increment: 1
+        }
+      }
+    })
+
     return useServerTool.responseSuccess({
       data: {
         post
