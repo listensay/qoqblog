@@ -43,6 +43,21 @@ export async function GET(request: NextRequest) {
       },
       where: {
         isDeleted: false
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+            description: true,
+            cover: true,
+          }
+        },
+        author: {
+          select: {
+            nickname: true,
+            avatar: true,
+          }
+        },
       }
     })
 
