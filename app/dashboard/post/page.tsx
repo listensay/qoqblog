@@ -7,7 +7,7 @@ import Link from 'next/link'
 const page = memo(() => {
   return (
     <div>
-      <Link href={ './post/new_post' }>
+      <Link href={ './post/0' }>
         <Button className='mb-4'>写文章</Button>
       </Link>
       <Render />

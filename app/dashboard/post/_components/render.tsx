@@ -1,36 +1,82 @@
 'use client'
 
-import React, { memo } from 'react'
-import { Table } from '@mantine/core';
+import React, { memo, useEffect, useState } from 'react'
+import { Button, LoadingOverlay, Table } from '@mantine/core';
+import { fetchDeletePost, fetchGetAuthPosts } from '@/service/posts';
+import dayjs from 'dayjs';
+import Link from 'next/link';
+import { notifications } from '@mantine/notifications';
 
 const list = memo(() => {
+  const [loading, setLoading] = useState(false)
+  const [list, setList] = useState([])
 
-  const elements = [
-    { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-    { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-    { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-    { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-    { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-  ];
 
-  const rows = elements.map((element) => (
-    <Table.Tr key={element.name}>
-      <Table.Td>{element.position}</Table.Td>
-      <Table.Td>{element.name}</Table.Td>
-      <Table.Td>{element.symbol}</Table.Td>
-      <Table.Td>{element.mass}</Table.Td>
+  const getLists = async () => {
+    setLoading(true)
+    const result = await fetchGetAuthPosts({ page: 1, pageSize: 10 })
+    setList(result?.data.posts)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    getLists()
+  }, [])
+
+  const deleteHandle = async (id: number) => {
+    const result = await fetchDeletePost(id)
+    if (result?.status === 200) {
+      await getLists()
+      notifications.show({
+        title: "删除成功",
+        message: "删除成功",
+      })
+    }
+  }
+  
+  const rows = list?.map((item: any) => (
+    <Table.Tr key={item.id}>
+      <Table.Td>
+        <Link href={`/dashboard/post/${item.id}`} className='mr-2 text-blue-500'>
+          {item.title}
+        </Link>
+      </Table.Td>
+      <Table.Td>{item.views}</Table.Td>
+      <Table.Td>{item.likes}</Table.Td>
+      <Table.Td>{item.category.name}</Table.Td>
+      <Table.Td>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Table.Td>
+      <Table.Td width={ '150'} align='center'>
+        {/* <Link href={`/dashboard/post/${item.id}`} className='mr-2'>
+          <Button variant="light" color="blue" size="xs">
+            编辑
+          </Button>
+        </Link> */}
+        <Button
+          variant="light"
+          color="red"
+          size="xs"
+          onClick={() => {
+            deleteHandle(item.id);
+          }}
+        >
+          删除
+        </Button>
+      </Table.Td>
     </Table.Tr>
   ));
 
   return (
     <div>
+      <LoadingOverlay visible={loading} />
       <Table striped highlightOnHover withTableBorder withColumnBorders>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Element position</Table.Th>
-            <Table.Th>Element name</Table.Th>
-            <Table.Th>Symbol</Table.Th>
-            <Table.Th>Atomic mass</Table.Th>
+            <Table.Th>标题</Table.Th>
+            <Table.Th>阅读</Table.Th>
+            <Table.Th>喜欢</Table.Th>
+            <Table.Th>分类</Table.Th>
+            <Table.Th>发布时间</Table.Th>
+            <Table.Th>操作</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
