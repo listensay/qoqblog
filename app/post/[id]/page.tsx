@@ -11,8 +11,8 @@ const page = memo(async ({ params }: { params: Promise<{ id: string }>}) => {
   return (
     <div>
       <HeaderLayout>
-        <div className='bg-white p-8 rounded-lg shadow-md'>
-          <div className='prose max-w-full mx-auto mb-8'>
+        <div>
+          <div className='prose max-sm:prose-sm max-w-full mx-auto mb-8'>
             <h1>{ post.title }</h1>
             <div>阅读 {post.views} · 发布时间 { dayjs( post.createdAt).format('YYYY年MM月DD日 hh:ss') }</div>
           </div>

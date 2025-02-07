@@ -29,7 +29,7 @@ const layout = memo(({ children }: { children: React.ReactNode }) => {
         <LayoutRightSide />
       </AppShell.Aside>
 
-      <AppShell.Main>{ children }</AppShell.Main>
+      <AppShell.Main className='bg-white'>{ children }</AppShell.Main>
     </AppShell>
   )
 })

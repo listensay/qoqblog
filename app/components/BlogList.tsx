@@ -72,7 +72,7 @@ const BlogList = async () => {
     }
   };
 
-  return <div className="bg-white p-5 rounded-lg shadow-md">{renderControl()}</div>;
+  return <div>{renderControl()}</div>;
 };
 
 export default BlogList;

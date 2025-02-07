@@ -25,7 +25,7 @@ export default function RootLayout({ children }: Props) {
     <StoreProvider>
       <html lang="en">
         <body
-          className={`antialiased bg-indigo-50`}
+          className={`antialiased bg-indigo-50 max-sm:bg-white`}
         >
           <MantineProvider>
             <Notifications />

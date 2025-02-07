@@ -2,7 +2,7 @@
 
 import React, { memo } from 'react';
 import Link from 'next/link';
-import { IconBrandBilibili, IconBrandGithub, IconBrandXFilled, IconHome, IconUserCircle } from '@tabler/icons-react';
+import { IconBrandBilibili, IconBrandGithub, IconBrandXFilled, IconHome, IconDashboard, IconBallBowling } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
 
 const menu = memo(() => {
@@ -14,23 +14,28 @@ const menu = memo(() => {
     },
     {
       name: '关于我',
-      icon: <IconUserCircle color="#a78bfa" />,
+      icon: <IconBallBowling color="#00b5ad" />,
       path: '/about',
     },
+    {
+      name: '登录',
+      icon: <IconDashboard color='#f59e0b' />,
+      path: '/login',
+    }
   ];
 
   const currentNav = usePathname();
 
   return (
     <div className="w-full">
-      <div className="flex justify-between w-full px-6">
+      <div className="flex justify-between w-full px-6 max-sm:px-4 max-sm:text-sm">
         <nav>
           <ul className="flex gap-4">
             {menus.map((item) => {
               return (
                 <Link 
                   href={item.path}
-                  className={`flex ${ item.path === currentNav ? 'text-sky-500' : '' }`}
+                  className={`flex items-center ${ item.path === currentNav ? 'text-sky-500' : '' }`}
                   key={item.path}
                 >
                   {item.icon} <span className="ml-2">{item.name}</span>
