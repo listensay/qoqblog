@@ -9,7 +9,7 @@ import '@mantine/code-highlight/styles.css';
 
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import ProgressBar from "@/components/ProgressBar";
+// import ProgressBar from "@/components/ProgressBar";
 import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: Props) {
         >
           <MantineProvider>
             <Notifications />
-            <ProgressBar />
+            {/* <ProgressBar /> */}
             <div>{children}</div>
           </MantineProvider>
         </body>
