@@ -64,6 +64,16 @@ class useRequest {
     const response = await this.axios.post(url, data);
     return this.formatResponse(response);
   }
+
+  async put(url: string, data?: Record<string, any>): Promise<MyResponseInterface> {
+    const response = await this.axios.put(url, data);
+    return this.formatResponse(response);
+  }
+
+  async delete(url: string, data?: Record<string, any>): Promise<MyResponseInterface> {
+    const response = await this.axios.delete(url, { data });
+    return this.formatResponse(response);
+  }
 }
 
 export default new useRequest();
