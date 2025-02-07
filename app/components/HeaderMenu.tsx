@@ -47,12 +47,12 @@ const menu = memo(() => {
               </Link>
             </li>
             <li>
-              <Link href={`https://github.com/listensay`}>
+              <Link href={`https://github.com/listensay`} target="_blank">
                 <IconBrandGithub color="black" />
               </Link>
             </li>
             <li>
-              <Link href={`https://x.com/yimeng2002`}>
+              <Link href={`https://x.com/yimeng2002`} target="_blank">
                 <IconBrandXFilled />
               </Link>
             </li>
