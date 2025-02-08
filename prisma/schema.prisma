@@ -32,10 +32,9 @@ model User {
 model Post {
   id               Int       @id @default(autoincrement())
   title            String
-  content          String?   @db.Text
-  markdownContent  String?   @db.Text
-  cover            String?
-  published        Boolean   @default(false)
+  content          String?   @db.LongText
+  markdownContent  String?   @db.LongText
+  cover            String?   @db.LongText
   author           User      @relation(fields: [authorId], references: [id])
   authorId         Int
   description      String?
