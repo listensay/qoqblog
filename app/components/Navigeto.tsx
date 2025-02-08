@@ -5,7 +5,7 @@ import Link from "next/link";
 
 interface NavigetoProps {
   href: string;
-  className: string;
+  className?: string;
   children: React.ReactNode;
 }
 

@@ -1,4 +1,3 @@
-import { Pagination } from '@mantine/core';
 import React, { memo } from 'react'
 import Render from './_components/render'
 import { Button } from '@mantine/core'
@@ -11,7 +10,6 @@ const page = memo(() => {
         <Button className='mb-4'>写文章</Button>
       </Link>
       <Render />
-      <Pagination total={10} className='mt-4' />
     </div>
   )
 })

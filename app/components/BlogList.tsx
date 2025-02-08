@@ -1,6 +1,7 @@
 import React from "react";
 import { fetchGetPosts } from "@/service/posts";
 import Navigateto from "@/components/Navigeto";
+import BlogItem from "./BlogItem";
 
 // 使用 Server Components 获取数据
 async function fetchPosts(page: number, pageSize: number) {
@@ -18,6 +19,7 @@ interface BlogListPost {
   content: string;
   createdAt: string;
   description: string;
+  cover: string;
 }
 
 const BlogList = async () => {
@@ -50,9 +52,8 @@ const BlogList = async () => {
             {/* 使用静态映射的随机颜色 */}
             <Navigateto
               href={`/post/${item.id}`}
-              className={`h-80 max-md:h-64 w-full flex items-center justify-center ${randomColor()} mb-4 rounded-lg text-white font-bold text-2xl max-md:text-lg`}
             >
-              {item.title}
+              <BlogItem title={item.title} color={ randomColor() } cover={ item.cover } />
             </Navigateto>
             <div className="text-gray-500 text-sm">{item.description}</div>
           </div>

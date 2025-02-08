@@ -3,7 +3,7 @@ import Menu from '@/components/HeaderMenu'
 
 const Header = memo(() => {
   return (
-    <div className="relative shadow-md rounded-lg overflow-hidden max-md:rounded-none max-md:shadow-none max-sm:border-b">
+    <div className="relative">
       <div
         className="w-full h-72 max-md:h-52"
         style={{

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { memo, useEffect, useState } from 'react'
-import { Button, LoadingOverlay, Table } from '@mantine/core';
+import { Button, LoadingOverlay, Pagination, Table } from '@mantine/core';
 import { fetchDeletePost, fetchGetAuthPosts } from '@/service/posts';
 import dayjs from 'dayjs';
 import Link from 'next/link';
@@ -36,7 +36,7 @@ const list = memo(() => {
   
   const rows = list?.map((item: any) => (
     <Table.Tr key={item.id}>
-      <Table.Td>
+      <Table.Td align='center'>
         <Link href={`/dashboard/post/${item.id}`} className='mr-2 text-blue-500'>
           {item.title}
         </Link>
@@ -44,13 +44,8 @@ const list = memo(() => {
       <Table.Td>{item.views}</Table.Td>
       <Table.Td>{item.likes}</Table.Td>
       <Table.Td>{item.category.name}</Table.Td>
-      <Table.Td>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Table.Td>
+      <Table.Td align='center'>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Table.Td>
       <Table.Td width={ '150'} align='center'>
-        {/* <Link href={`/dashboard/post/${item.id}`} className='mr-2'>
-          <Button variant="light" color="blue" size="xs">
-            编辑
-          </Button>
-        </Link> */}
         <Button
           variant="light"
           color="red"
@@ -68,21 +63,24 @@ const list = memo(() => {
   return (
     <div>
       <LoadingOverlay visible={loading} />
-      <Table striped highlightOnHover withTableBorder withColumnBorders>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>标题</Table.Th>
-            <Table.Th>阅读</Table.Th>
-            <Table.Th>喜欢</Table.Th>
-            <Table.Th>分类</Table.Th>
-            <Table.Th>发布时间</Table.Th>
-            <Table.Th>操作</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {rows}
-        </Table.Tbody>
-      </Table>
+      <div className='border rounded-md'>
+        <Table striped highlightOnHover withColumnBorders>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>标题</Table.Th>
+              <Table.Th>阅读</Table.Th>
+              <Table.Th>喜欢</Table.Th>
+              <Table.Th>分类</Table.Th>
+              <Table.Th>发布时间</Table.Th>
+              <Table.Th>操作</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {rows}
+          </Table.Tbody>
+        </Table>
+        <Pagination total={10} className='mt-4' />
+      </div>
     </div>
   )
 })
