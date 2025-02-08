@@ -44,6 +44,12 @@ export async function GET(request: NextRequest) {
     result += chunk;
   }
 
+  if (result.includes("[ERROR]")) {
+    return useServerTool.responseError({
+      message: "生成失败",
+    });
+  }
+
   // 提取所有 "data: " 后的内容
   const matches = result.match(/data: "(.*?)"/g);
   let cleanedText
