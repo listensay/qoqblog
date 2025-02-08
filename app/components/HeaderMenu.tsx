@@ -68,4 +68,6 @@ const menu = memo(() => {
   );
 });
 
+menu.displayName = 'HeaderMenu';
+
 export default menu;

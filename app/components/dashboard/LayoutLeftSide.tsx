@@ -44,4 +44,6 @@ const Page = memo(() => {
   )
 })
 
+Page.displayName = 'LayoutLeftSide'
+
 export default Page

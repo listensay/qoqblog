@@ -109,4 +109,6 @@ const page = memo(() => {
   )
 })
 
+page.displayName = 'code'
+
 export default page

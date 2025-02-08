@@ -1,11 +1,11 @@
 'use client';
 
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import '@mantine/tiptap/styles.css';
 import Highlight from '@tiptap/extension-highlight';
 import Underline from '@tiptap/extension-underline';
-import Image from '@tiptap/extension-image'; // 新增导入 Image 扩展
+import EditorImage from '@tiptap/extension-image'; // 新增导入 Image 扩展
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
@@ -17,8 +17,9 @@ import { notifications } from '@mantine/notifications';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import BlogItem from '@/components/BlogItem';
+import Image from 'next/image';
 
-const CustomImage = Image.extend({
+const CustomImage = EditorImage.extend({
   parseHTML() {
     return [
       {
@@ -33,17 +34,27 @@ const CustomImage = Image.extend({
 
 
 const Page = memo(({ params }: any) => {
+  const router = useRouter();
+  const { id } = React.use(params) as any;
+
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      title: '',
+      description: '',
+    },
+    validate: {
+      title: hasLength({ min: 3 }, 'Title must be 3 characters long'),
+      description: hasLength({ min: 3 }, 'Description must be 3 characters long'),
+    },
+  });
+
   const [content, setContent] = useState('');
   const [cover, setCover] = useState('');
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const openRef = useRef<() => void>(null);
-
-  // 新增：隐藏文件上传 input 的引用
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const router = useRouter();
-  const { id } = React.use(params) as any;
 
   // 初始化编辑器，并加入 Image 扩展
   const editor = useEditor({
@@ -75,19 +86,7 @@ const Page = memo(({ params }: any) => {
           console.error('Failed to fetch post:', error);
         });
     }
-  }, [id, editor]);
-
-  const form = useForm({
-    mode: 'uncontrolled',
-    initialValues: {
-      title: '',
-      description: '',
-    },
-    validate: {
-      title: hasLength({ min: 3 }, 'Title must be 3 characters long'),
-      description: hasLength({ min: 3 }, 'Description must be 3 characters long'),
-    },
-  });
+  }, [id, editor, form]);
 
   const submit = async (values: typeof form.values) => {
     try {
@@ -168,7 +167,7 @@ const Page = memo(({ params }: any) => {
       return (
         <div>
           <div onClick={() => openRef.current?.()}>
-            <img src={cover} alt="Cover" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+            <Image src={cover} alt="Cover" style={{ maxWidth: '100%', maxHeight: '300px' }} />
           </div>
         </div>
       );
@@ -178,7 +177,7 @@ const Page = memo(({ params }: any) => {
       <Dropzone
         openRef={openRef}
         onDrop={(files) => dropHandle(files)}
-        onReject={(files) =>
+        onReject={() =>
           notifications.show({ message: '请检查文件大小', title: '文件上传失败' })
         }
         maxSize={5 * 1024 ** 2}
@@ -311,5 +310,7 @@ const Page = memo(({ params }: any) => {
     </div>
   );
 });
+
+Page.displayName = 'AuthPostEditor'
 
 export default Page;

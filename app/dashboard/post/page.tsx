@@ -14,4 +14,6 @@ const page = memo(() => {
   )
 })
 
+page.displayName = 'AuthPosts'
+
 export default page

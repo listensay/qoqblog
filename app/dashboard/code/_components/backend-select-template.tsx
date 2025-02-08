@@ -97,4 +97,6 @@ ${
   )
 })
 
+BackendTemplate.displayName = 'BackendTemplate'
+
 export default BackendTemplate

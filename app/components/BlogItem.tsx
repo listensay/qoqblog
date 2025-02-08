@@ -26,4 +26,6 @@ const BlogItem = memo(({ title, color, cover } : { title: string, color?: string
   )
 })
 
+BlogItem.displayName = 'BlogItem'
+
 export default BlogItem

@@ -5,7 +5,7 @@ const HeaderLayout = memo(({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div>
-        <div className="mx-auto w-[900] max-lg:p-4 max-md:p-0 max-lg:w-full">
+        <div className="mx-auto w-[900px] max-lg:p-4 max-md:p-0 max-lg:w-full">
           <div className='shadow-md rounded-md overflow-hidden my-4 bg-white'>
             <header className="border-b">
               <Header />
@@ -26,5 +26,7 @@ const HeaderLayout = memo(({ children }: { children: React.ReactNode }) => {
     </div>
   );
 });
+
+HeaderLayout.displayName = 'HeaderLayout';
 
 export default HeaderLayout;

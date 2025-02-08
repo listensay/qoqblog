@@ -68,4 +68,6 @@ const backend = memo((props: { data: any }) => {
   )
 })
 
+backend.displayName = 'backend'
+
 export default backend

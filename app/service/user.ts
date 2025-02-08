@@ -4,6 +4,6 @@ export const useFetchGetAuthProfile = () => {
   return myRequest.get('/v1/auth/profile')
 }
 
-export const useFetchAuthLogout = () => {
+export const fetchAuthLogout = () => {
   return myRequest.post('/v1/auth/logout')
 }

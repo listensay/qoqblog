@@ -25,7 +25,7 @@ const list = memo(() => {
 
   const deleteHandle = async (id: number) => {
     const result = await fetchDeletePost(id)
-    if (result?.status === 200) {
+    if (result?.success) {
       await getLists()
       notifications.show({
         title: "删除成功",
@@ -84,5 +84,7 @@ const list = memo(() => {
     </div>
   )
 })
+
+list.displayName = 'AuthPostlist'
 
 export default list

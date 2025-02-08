@@ -68,4 +68,6 @@ const page = memo(() => {
   )
 })
 
+page.displayName = 'login'
+
 export default page

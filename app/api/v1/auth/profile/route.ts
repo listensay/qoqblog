@@ -7,7 +7,7 @@ export async function GET(request: NextRequest){
 
   try {
     useServerTool.setRequest(request)
-    let user = await useServerTool.useAuth()
+    const user = await useServerTool.useAuth()
 
     if (!user) {
       cookieStore.delete('token')
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest){
         profile: user
       }
     })
-  } catch (error) {
+  } catch {
     return useServerTool.responseError({
       message: 'Error'
     })

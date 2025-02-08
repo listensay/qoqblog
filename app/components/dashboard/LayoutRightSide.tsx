@@ -4,7 +4,7 @@ import React, { memo, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { getUserProfile } from '@/store/features/users'
 import { Button } from '@mantine/core'
-import { useFetchAuthLogout } from '@/service/user'
+import { fetchAuthLogout } from '@/service/user'
 import { notifications } from '@mantine/notifications'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -29,7 +29,7 @@ const Page = memo(() => {
   }
 
   const logout = async () => {
-    await useFetchAuthLogout()
+    await fetchAuthLogout()
     notifications.show({
       title: '退出登录',
       message: '退出登录成功',
@@ -51,5 +51,7 @@ const Page = memo(() => {
     </div>
   )
 })
+
+Page.displayName = 'LayoutRightSide'
 
 export default Page

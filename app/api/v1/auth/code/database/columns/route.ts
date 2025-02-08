@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       data: columns
     })
 
-  } catch (error) {
+  } catch {
     useServerTool.responseError({
       message: "系统错误"
     })

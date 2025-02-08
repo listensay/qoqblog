@@ -46,7 +46,7 @@ export async function DELETE(request: NextRequest) {
     return useServerTool.responseSuccess({
       message: "删除成功",
     });
-  } catch (error) {
+  } catch {
     return useServerTool.responseError({
       message: "系统错误",
       status: 500,

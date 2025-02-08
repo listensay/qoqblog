@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       message: "退出成功"
     })
 
-  } catch (error) {
+  } catch {
     useServerTool.responseError({
       message: "系统错误"
     })

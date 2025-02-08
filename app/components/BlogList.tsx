@@ -1,3 +1,5 @@
+"use server";
+
 import React from "react";
 import { fetchGetPosts } from "@/service/posts";
 import Navigateto from "@/components/Navigeto";
@@ -22,12 +24,19 @@ interface BlogListPost {
   cover: string;
 }
 
-const BlogList = async () => {
+const BlogList =  () => {
   const page = 1; // 默认第一页
   const pageSize = 10; // 每页显示 10 条数据
-  const data = await fetchPosts(page, pageSize);
-  const list = data.posts;
-  const total = data.total;
+  let list: any = []
+  let total: any = 0
+  fetchPosts(page, pageSize).then(res => {
+    list = res.data.posts
+    total = res.data.total
+  }).catch(() => {
+    return {
+      notFound: true,
+    }
+  })
 
   // 静态颜色映射
   const colors = [
@@ -47,17 +56,19 @@ const BlogList = async () => {
   const renderList = () => {
     return (
       <>
-        {list.map((item: BlogListPost) => (
-          <div key={item.id} className="mb-6">
-            {/* 使用静态映射的随机颜色 */}
-            <Navigateto
-              href={`/post/${item.id}`}
-            >
-              <BlogItem title={item.title} color={ randomColor() } cover={ item.cover } />
-            </Navigateto>
-            <div className="text-gray-500 text-sm">{item.description}</div>
-          </div>
-        ))}
+        {
+          list.map((item: BlogListPost) => (
+            <div key={item.id} className="mb-6">
+              {/* 使用静态映射的随机颜色 */}
+              <Navigateto
+                href={`/post/${item.id}`}
+              >
+                <BlogItem title={item.title} color={ randomColor() } cover={ item.cover } />
+              </Navigateto>
+              <div className="text-gray-500 text-sm">{item.description}</div>
+            </div>
+          ))
+        }
         <div>
           {/* <Pagination total={1} /> */}
         </div>

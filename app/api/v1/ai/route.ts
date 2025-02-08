@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
   // 找到最后一个有效的 HTML 段落
   if (matches) {
     const lastMatch = matches[matches.length - 2]; // 倒数第二个是最终的内容，最后一个是 [DONE]
-    let finalContent = lastMatch.replace(/data: "/, "").replace(/"$/, ""); // 去掉 data: " 和结尾的 "
+    const finalContent = lastMatch.replace(/data: "/, "").replace(/"$/, ""); // 去掉 data: " 和结尾的 "
     cleanedText = finalContent.replace(/<\/?[^>]+(>|$)/g, "");
   } else {
     return useServerTool.responseError({

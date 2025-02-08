@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
         total
       }
     })
-  } catch (error) {
+  } catch {
     return useServerTool.responseError({
       message: "系统错误"
     })

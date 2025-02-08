@@ -51,12 +51,12 @@ export async function POST(request: NextRequest) {
       return useServerTool.responseSuccess({
         message: "注册成功"
       })
-    } catch (error) {
+    } catch {
       return useServerTool.responseError({
         message: "注册失败"
       })
     }
-  } catch (error) {
+  } catch {
     return useServerTool.responseError({
       message: "系统错误",
       status: 400

@@ -9,4 +9,6 @@ const Page = memo(() => {
   )
 })
 
+Page.displayName = 'Dashboard'
+
 export default Page

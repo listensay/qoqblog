@@ -32,4 +32,6 @@ const page = memo(({ children }: Props) => {
   return <Provider store={ storeRef.current }>{ children }</Provider>
 })
 
+page.displayName = 'StoreProvider'
+
 export default page

@@ -23,4 +23,6 @@ const page = memo(async ({ params }: { params: Promise<{ id: string }>}) => {
   )
 })
 
+page.displayName = 'PostDetail'
+
 export default page

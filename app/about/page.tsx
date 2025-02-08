@@ -11,4 +11,6 @@ const page = memo(() => {
   )
 })
 
+page.displayName = 'About'
+
 export default page

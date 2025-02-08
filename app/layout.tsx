@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 
 import "@/assets/styles/globals.css";
 import '@/assets/styles/nprogress.css';
@@ -29,7 +29,9 @@ export default function RootLayout({ children }: Props) {
         >
           <MantineProvider>
             <Notifications />
-            <ProgressBar />
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProgressBar />
+            </Suspense>
             <div>{children}</div>
           </MantineProvider>
         </body>

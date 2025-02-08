@@ -9,4 +9,6 @@ const loading = memo(() => {
   )
 })
 
+loading.displayName = 'loading'
+
 export default loading
