@@ -1,33 +1,54 @@
 'use client';
 
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import '@mantine/tiptap/styles.css';
 import Highlight from '@tiptap/extension-highlight';
 import Underline from '@tiptap/extension-underline';
+import Image from '@tiptap/extension-image'; // 新增导入 Image 扩展
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
-
-import { Button, Group, Textarea, TextInput } from '@mantine/core';
+import { Button, Group, Textarea, TextInput, Text, Tabs } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
 import myRequest from '~@/utils/myRequest';
 import { fetchGetPost, fetchInsertPost, fetchUpdatePost } from '@/service/posts';
 import { notifications } from '@mantine/notifications';
+import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
+import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import BlogItem from '@/components/BlogItem';
 
-const Page = memo(() => {
+const CustomImage = Image.extend({
+  parseHTML() {
+    return [
+      {
+        tag: 'img[src^="data:image"]',
+      },
+      {
+        tag: 'img[src]',
+      },
+    ];
+  },
+});
+
+
+const Page = memo(({ params }: any) => {
   const [content, setContent] = useState('');
+  const [cover, setCover] = useState('');
+  const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
+  const openRef = useRef<() => void>(null);
 
-  const router = useRouter()
+  // 新增：隐藏文件上传 input 的引用
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 使用 useParams 获取动态路由参数
-  const params = useParams();
-  const id = Number(params.id);
+  const router = useRouter();
+  const { id } = React.use(params) as any;
 
+  // 初始化编辑器，并加入 Image 扩展
   const editor = useEditor({
-    content: '', // 初始内容为空
-    extensions: [StarterKit, Underline, Highlight],
+    content: '',
+    extensions: [StarterKit, Underline, Highlight, CustomImage],
     onUpdate: ({ editor }) => {
       setContent(editor.getHTML());
     },
@@ -41,12 +62,11 @@ const Page = memo(() => {
         .then((res) => {
           const { data } = res as any;
           setContent(data.post.content);
+          setCover(data.post.cover);
           form.setValues({
             title: data.post.title,
-            description: data.post.description
+            description: data.post.description,
           });
-
-          // 手动更新编辑器内容
           if (editor) {
             editor.commands.setContent(data.post.content);
           }
@@ -55,7 +75,7 @@ const Page = memo(() => {
           console.error('Failed to fetch post:', error);
         });
     }
-  }, [id, editor]); // 依赖 editor，确保编辑器实例已初始化
+  }, [id, editor]);
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -63,7 +83,6 @@ const Page = memo(() => {
       title: '',
       description: '',
     },
-
     validate: {
       title: hasLength({ min: 3 }, 'Title must be 3 characters long'),
       description: hasLength({ min: 3 }, 'Description must be 3 characters long'),
@@ -72,39 +91,37 @@ const Page = memo(() => {
 
   const submit = async (values: typeof form.values) => {
     try {
-      if(id > 0) {
+      if (id > 0) {
         await fetchUpdatePost({
-          id: id,
+          id,
           title: values.title,
           description: values.description,
           content: content,
           categoryId: 1,
-          cover: ""
-        })
-
+          cover,
+        });
         notifications.show({
           title: 'Post updated',
           message: 'Post has been updated successfully',
           color: 'green',
           autoClose: 3000,
         });
-
-        router.push('/dashboard/post')
+        router.push('/dashboard/post');
       } else {
         await fetchInsertPost({
           title: values.title,
           description: values.description,
           content: content,
           categoryId: 1,
-          cover: '',
+          cover,
         });
-
         notifications.show({
           title: 'Post created',
           message: 'Post has been created successfully',
           color: 'green',
           autoClose: 3000,
         });
+        router.push('/dashboard/post');
       }
     } catch (error) {
       console.log(error);
@@ -113,21 +130,15 @@ const Page = memo(() => {
 
   const generateSummary = () => {
     setLoading(true);
-
-    // content清除HTML标签
     const clearContent = content.replace(/<[^>]+>/g, '');
-
     try {
-      myRequest
-        .get('/v1/ai', {
-          content: clearContent,
-          title: form.values.title,
-        })
-        .then((res) => {
+      myRequest.get('/v1/ai', {
+        content: clearContent,
+        title,
+      })
+      .then((res) => {
           const description = JSON.parse(`"${res.data.message}"`);
-          form.setValues({
-            description,
-          });
+          form.setValues({ description });
           setLoading(false);
         });
     } catch (error) {
@@ -135,8 +146,109 @@ const Page = memo(() => {
     }
   };
 
+  const dropHandle = async (files: File[]) => {
+    const images = await Promise.all(
+      files.map(
+        (file) =>
+          new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(file);
+          })
+      )
+    );
+
+    console.log(images.length);
+    setCover(images[0]);
+  };
+
+  const coverRander = () => {
+    if (cover) {
+      return (
+        <div>
+          <div onClick={() => openRef.current?.()}>
+            <img src={cover} alt="Cover" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Dropzone
+        openRef={openRef}
+        onDrop={(files) => dropHandle(files)}
+        onReject={(files) =>
+          notifications.show({ message: '请检查文件大小', title: '文件上传失败' })
+        }
+        maxSize={5 * 1024 ** 2}
+        accept={IMAGE_MIME_TYPE}
+      >
+        <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+          <Dropzone.Accept>
+            <IconUpload size={52} color="var(--mantine-color-blue-6)" stroke={1.5} />
+          </Dropzone.Accept>
+          <Dropzone.Reject>
+            <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5} />
+          </Dropzone.Reject>
+          <Dropzone.Idle>
+            <IconPhoto size={52} color="var(--mantine-color-dimmed)" stroke={1.5} />
+          </Dropzone.Idle>
+          <div>
+            <Text size="xl" inline>
+              请选择一张图片作为文章封面上传
+            </Text>
+            <Text size="sm" c="dimmed" inline mt={7}>
+              文件大小不超过5MB
+            </Text>
+          </div>
+        </Group>
+      </Dropzone>
+    );
+  };
+
+  // 新增：处理图片上传，并将图片以 base64 格式插入到编辑器中
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && editor) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result as string;
+        editor.chain().focus().setImage({ src: base64 }).run();
+      };
+      reader.onerror = (error) => {
+        console.error('图片读取错误：', error);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // 当点击“插入图片”按钮时，触发隐藏的 input
+  const triggerImageUpload = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div>
+      <Tabs defaultValue="cover">
+        <Tabs.List>
+          <Tabs.Tab value="cover">上传封面</Tabs.Tab>
+          <Tabs.Tab value="post">封面效果展示</Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="cover">
+          <div className="py-4">
+            {coverRander()}
+          </div>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="post">
+          <div className="py-4">
+            <BlogItem title={title} color="bg-pink-300" cover={cover} />
+          </div>
+        </Tabs.Panel>
+      </Tabs>
+
       <form onSubmit={form.onSubmit((values) => submit(values))}>
         <TextInput
           withAsterisk
@@ -144,8 +256,13 @@ const Page = memo(() => {
           placeholder="请输入文章标题"
           {...form.getInputProps('title')}
           className="mb-4"
+          onChange={(event) => {
+            setTitle(event.target.value);
+            form.setValues({ title: event.target.value });
+          }}
         />
 
+        {/* 新增工具栏按钮：插入图片 */}
         <RichTextEditor editor={editor} variant="subtle" className="mb-4">
           <RichTextEditor.Toolbar sticky stickyOffset={60}>
             <RichTextEditor.ControlsGroup>
@@ -156,10 +273,22 @@ const Page = memo(() => {
               <RichTextEditor.ClearFormatting />
               <RichTextEditor.Highlight />
               <RichTextEditor.Code />
+              <Button variant="outline" size="xs" onClick={triggerImageUpload}>
+                插入图片
+              </Button>
             </RichTextEditor.ControlsGroup>
           </RichTextEditor.Toolbar>
           <RichTextEditor.Content />
         </RichTextEditor>
+
+        {/* 隐藏的文件上传 input */}
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleImageUpload}
+        />
 
         <div className="flex items-center mb-4">
           <Button className="mr-2" onClick={() => generateSummary()}>
