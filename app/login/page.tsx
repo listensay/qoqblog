@@ -13,8 +13,8 @@ const page = memo(() => {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      username: "odr233",
-      password: "meng@2002"
+      username: "",
+      password: ""
     },
 
     validate: {
