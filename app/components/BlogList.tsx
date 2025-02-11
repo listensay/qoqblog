@@ -1,44 +1,10 @@
-"use server";
-
 import React from "react";
-import { fetchGetPosts } from "@/service/posts";
-import Navigateto from "@/components/Navigeto";
+import Navigateto from "@/components/Navigato";
 import BlogItem from "./BlogItem";
+import { BlogListPost } from "@/page";
 
-// 使用 Server Components 获取数据
-async function fetchPosts(page: number, pageSize: number) {
-  try {
-    const result = await fetchGetPosts(page, pageSize);
-    return result?.data;
-  } catch (error) {
-    console.log(error);
-  }
-}
+export default async function BlogList({ list }: { list: BlogListPost[] }) {
 
-interface BlogListPost {
-  id: number;
-  title: string;
-  content: string;
-  createdAt: string;
-  description: string;
-  cover: string;
-}
-
-const BlogList =  () => {
-  const page = 1; // 默认第一页
-  const pageSize = 10; // 每页显示 10 条数据
-  let list: any = []
-  let total: any = 0
-  fetchPosts(page, pageSize).then(res => {
-    list = res.data.posts
-    total = res.data.total
-  }).catch(() => {
-    return {
-      notFound: true,
-    }
-  })
-
-  // 静态颜色映射
   const colors = [
     "bg-red-300",
     "bg-blue-300",
@@ -48,43 +14,24 @@ const BlogList =  () => {
     "bg-purple-300",
     "bg-pink-300",
   ];
+  const randomColor = () =>
+    colors[Math.floor(Math.random() * colors.length)];
 
-  const randomColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
-
-  const renderList = () => {
-    return (
-      <>
-        {
-          list.map((item: BlogListPost) => (
-            <div key={item.id} className="mb-6">
-              {/* 使用静态映射的随机颜色 */}
-              <Navigateto
-                href={`/post/${item.id}`}
-              >
-                <BlogItem title={item.title} color={ randomColor() } cover={ item.cover } />
-              </Navigateto>
-              <div className="text-gray-500 text-sm">{item.description}</div>
-            </div>
-          ))
-        }
-        <div>
-          {/* <Pagination total={1} /> */}
+  return (
+    <div>
+      {list.map((item: BlogListPost) => (
+        <div key={item.id} className="mb-6">
+          <Navigateto href={`/${item.id}`}>
+            <BlogItem
+              title={item.title}
+              color={randomColor()}
+              cover={item.cover}
+            />
+          </Navigateto>
+          <div className="text-gray-500 text-sm">{item.description}</div>
         </div>
-      </>
-    );
-  };
-
-  const renderControl = () => {
-    if (total === 0) {
-      return <div>暂无数据</div>;
-    } else {
-      return renderList();
-    }
-  };
-
-  return <div>{renderControl()}</div>;
-};
-
-export default BlogList;
+      ))}
+      <div>{/* 可放分页控件 */}</div>
+    </div>
+  );
+}
