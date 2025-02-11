@@ -86,7 +86,8 @@ const Page = memo(({ params }: any) => {
           console.error('Failed to fetch post:', error);
         });
     }
-  }, [id, editor, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, editor]);
 
   const submit = async (values: typeof form.values) => {
     try {
@@ -167,7 +168,7 @@ const Page = memo(({ params }: any) => {
       return (
         <div>
           <div onClick={() => openRef.current?.()}>
-            <Image src={cover} alt="Cover" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+            <Image src={cover} width={300} height={300} alt="Cover" style={{ maxWidth: '100%', maxHeight: '300px' }} />
           </div>
         </div>
       );
