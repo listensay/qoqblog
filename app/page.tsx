@@ -37,9 +37,9 @@ export default async function Home() {
   return (
     <div>
       <HeaderLayout>
-      <Suspense fallback={<p>Loading feed...</p>}>
-        <BlogList list={list} />
-      </Suspense>
+        <Suspense fallback={<p>Loading feed...</p>}>
+          <BlogList list={list} />
+        </Suspense>
       </HeaderLayout>
     </div>
   );
