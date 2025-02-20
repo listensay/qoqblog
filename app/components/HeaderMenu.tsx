@@ -35,7 +35,7 @@ const menu = memo(() => {
               return (
                 <Link 
                   href={item.path}
-                  className={`flex items-center h-full text-sm relative px-4 max-md:px-2 ${ item.path === currentNav ? 'text-pink-300' : '' }`}
+                  className={`flex items-center h-full text-md relative px-4 max-md:px-2 ${ item.path === currentNav ? 'text-pink-300' : '' }`}
                   key={item.path}
                 >
                   <div className={`${ item.path === currentNav ? 'absolute left-0 bottom-0 h-[4px] w-full bg-pink-300' : '' }`}></div>
