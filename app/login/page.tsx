@@ -3,7 +3,7 @@
 import { Group, TextInput, Button } from '@mantine/core'
 import { useForm, hasLength } from '@mantine/form';
 import React, { memo } from 'react'
-import useRequest from '~@/utils/myRequest'
+import useRequest from '~/utils/myRequest'
 import { notifications } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
 
