@@ -117,6 +117,7 @@ pnpm start
 ### 提交规范
 
 提交信息应遵循以下格式：
+
 ```
 <type>(<scope>): <subject>
 
@@ -126,6 +127,7 @@ pnpm start
 ```
 
 type 类型：
+
 - feat: 新功能
 - fix: 修复
 - docs: 文档

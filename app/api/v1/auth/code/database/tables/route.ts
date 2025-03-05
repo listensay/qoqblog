@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server";
-import { useServerTool } from "~/utils/useServerTool";
-import prisma from "~/utils/usePrisma";
+import { NextRequest } from 'next/server'
+import { useServerTool } from '~/utils/useServerTool'
+import prisma from '~/utils/usePrisma'
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,9 +8,9 @@ export async function GET(request: NextRequest) {
 
     const user = await useServerTool.useAuth()
 
-    if(!user) {
+    if (!user) {
       return useServerTool.responseError({
-        message: "未登录",
+        message: '未登录',
         status: 401
       })
     }
@@ -27,11 +27,9 @@ export async function GET(request: NextRequest) {
     return useServerTool.responseSuccess({
       data: allTables
     })
-
-
   } catch {
     useServerTool.responseError({
-      message: "系统错误"
+      message: '系统错误'
     })
   }
 }

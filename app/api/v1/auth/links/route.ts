@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server";
-import { useServerTool } from "~/utils/useServerTool";
-import prisma from "~/utils/usePrisma";
+import { NextRequest } from 'next/server'
+import { useServerTool } from '~/utils/useServerTool'
+import prisma from '~/utils/usePrisma'
 
 export async function GET(request: NextRequest) {
   useServerTool.setRequest(request)
@@ -8,24 +8,24 @@ export async function GET(request: NextRequest) {
   try {
     const user = await useServerTool.useAuth()
 
-    if(!user) {
+    if (!user) {
       return useServerTool.responseError({
-        message: "未登录",
+        message: '未登录',
         status: 401
       })
     }
 
     const body = useServerTool.getParams()
 
-    if(Object.keys(body).length === 0) {
+    if (Object.keys(body).length === 0) {
       return useServerTool.responseError({
-        message: "参数错误"
+        message: '参数错误'
       })
     }
 
-    if(!body.page || !body.pageSize) {
+    if (!body.page || !body.pageSize) {
       return useServerTool.responseError({
-        message: "参数错误"
+        message: '参数错误'
       })
     }
 
@@ -40,9 +40,9 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    if(!links) {
+    if (!links) {
       return useServerTool.responseError({
-        message: "链接不存在"
+        message: '链接不存在'
       })
     }
 
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
     })
   } catch {
     return useServerTool.responseError({
-      message: "系统错误"
+      message: '系统错误'
     })
   }
 }

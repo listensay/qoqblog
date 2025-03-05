@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build && node ./server.mjs",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@mantine/code-highlight": "^7.16.2",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/eslint-plugin-next": "^15.2.1",
     "@tailwindcss/typography": "^0.5.16",
     "@types/bcryptjs": "^2.4.6",
     "@types/js-cookie": "^3.0.6",
@@ -51,12 +53,15 @@
     "@types/nprogress": "^0.2.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "^9.21.0",
     "eslint-config-next": "15.1.5",
-    "eslint-config-prettier": "^10.0.1",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
     "postcss": "^8.5.1",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
+    "prettier": "^3.5.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

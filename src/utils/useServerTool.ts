@@ -1,47 +1,53 @@
-import { cookies } from "next/headers";
-import { NextRequest } from "next/server";
+import { cookies } from 'next/headers'
+import { NextRequest } from 'next/server'
 import jwt from 'jsonwebtoken'
-import prisma from './usePrisma';
+import prisma from './usePrisma'
 
 export interface MyResponseInterface {
-  message?: string;
-  success?: boolean;
-  data?: any;
-  status?: number;
+  message?: string
+  success?: boolean
+  data?: any
+  status?: number
 }
 
 class ServerTool {
-  private request: NextRequest | null;
+  private request: NextRequest | null
 
   constructor() {
-    this.request = null;
+    this.request = null
   }
   responseSuccess(option: MyResponseInterface) {
-    return Response.json({
-      message: option.message || 'OK',
-      success: option.success || true,
-      status: option.status || 200,
-      data: option.data
-    }, {
-      status: 200
-    })
+    return Response.json(
+      {
+        message: option.message || 'OK',
+        success: option.success || true,
+        status: option.status || 200,
+        data: option.data
+      },
+      {
+        status: 200
+      }
+    )
   }
   responseError(option: MyResponseInterface) {
-    return Response.json({
-      message: option.message || 'Error',
-      success: option.success || false,
-      status: option.status || 400,
-      data: option.data || null
-    }, {
-      status: option.status || 400
-    })
+    return Response.json(
+      {
+        message: option.message || 'Error',
+        success: option.success || false,
+        status: option.status || 400,
+        data: option.data || null
+      },
+      {
+        status: option.status || 400
+      }
+    )
   }
   /**
    * 获取URL地址参数
    * @param name Key
    * @returns Value
    */
-  getParams(){
+  getParams() {
     if (this.request === null) {
       return {}
     }
@@ -57,21 +63,23 @@ class ServerTool {
     return await this.request.json()
   }
   setRequest(request: NextRequest) {
-    this.request = request;
+    this.request = request
   }
   async useAuth() {
     const cookieStore = await cookies()
-    const token = cookieStore.get('token')?.value || this.request!.headers.get('authorization')
+    const token =
+      cookieStore.get('token')?.value ||
+      this.request!.headers.get('authorization')
     let user
 
-    if(!token) {
+    if (!token) {
       return false
     }
-    
+
     try {
       // // 获取密钥
       const secret = process.env.JWT_SECRET as string
-      const decoded = <any> jwt.verify(token, secret)
+      const decoded = <any>jwt.verify(token, secret)
 
       user = await prisma.user.findFirst({
         where: {

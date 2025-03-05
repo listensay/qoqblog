@@ -1,21 +1,19 @@
-import React from "react";
-import Navigateto from "~/components/Navigato";
-import BlogItem from "./BlogItem";
-import { BlogListPost } from "@/page";
+import React from 'react'
+import Navigateto from '~/components/Navigato'
+import BlogItem from './BlogItem'
+import { BlogListPost } from '@/page'
 
 export default async function BlogList({ list }: { list: BlogListPost[] }) {
-
   const colors = [
-    "bg-red-300",
-    "bg-blue-300",
-    "bg-green-300",
-    "bg-yellow-400",
-    "bg-orange-300",
-    "bg-purple-300",
-    "bg-pink-300",
-  ];
-  const randomColor = () =>
-    colors[Math.floor(Math.random() * colors.length)];
+    'bg-red-300',
+    'bg-blue-300',
+    'bg-green-300',
+    'bg-yellow-400',
+    'bg-orange-300',
+    'bg-purple-300',
+    'bg-pink-300'
+  ]
+  const randomColor = () => colors[Math.floor(Math.random() * colors.length)]
 
   return (
     <div>
@@ -33,5 +31,5 @@ export default async function BlogList({ list }: { list: BlogListPost[] }) {
       ))}
       <div>{/* 可放分页控件 */}</div>
     </div>
-  );
+  )
 }

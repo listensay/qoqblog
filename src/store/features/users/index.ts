@@ -1,10 +1,13 @@
-import { useFetchGetAuthProfile } from "~/services/user";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { useFetchGetAuthProfile } from '~/services/user'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-export const getUserProfile = createAsyncThunk('user/getUserProfile', async () => {
-  const result = await useFetchGetAuthProfile()
-  return result.data.profile
-});
+export const getUserProfile = createAsyncThunk(
+  'user/getUserProfile',
+  async () => {
+    const result = await useFetchGetAuthProfile()
+    return result.data.profile
+  }
+)
 
 interface Profile {
   username: string
@@ -21,13 +24,11 @@ const userSlice = createSlice({
       nickname: ''
     } as Profile
   },
-  reducers: {
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getUserProfile.fulfilled, (state, action) => {
-        state.profile = action.payload
-      })
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(getUserProfile.fulfilled, (state, action) => {
+      state.profile = action.payload
+    })
   }
 })
 

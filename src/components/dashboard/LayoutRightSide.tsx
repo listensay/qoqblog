@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React, { memo, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -44,9 +44,9 @@ const Page = memo(() => {
       <h1>User Profile</h1>
       <p>Username: {profile.username || 'No username'}</p>
       <p>Email: {profile.email || 'No email'}</p>
-      <p className='mb-2'>Nickname: {profile.nickname || 'No nickname'}</p>
-      <Button onClick={ () => logout() }>退出登录</Button>
-      <Link href='/dashboard/post'>posts</Link>
+      <p className="mb-2">Nickname: {profile.nickname || 'No nickname'}</p>
+      <Button onClick={() => logout()}>退出登录</Button>
+      <Link href="/dashboard/post">posts</Link>
       {/* 其他字段 */}
     </div>
   )

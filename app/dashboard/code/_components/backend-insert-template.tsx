@@ -1,19 +1,27 @@
-import React, { memo } from 'react';
-import { CodeHighlight } from '@mantine/code-highlight';
-import { useForm } from '@mantine/form';
-import { TextInput, Group, ActionIcon, Box, Text, Button, Select } from '@mantine/core';
-import { randomId } from '@mantine/hooks';
-import { IconTrash } from '@tabler/icons-react';
+import React, { memo } from 'react'
+import { CodeHighlight } from '@mantine/code-highlight'
+import { useForm } from '@mantine/form'
+import {
+  TextInput,
+  Group,
+  ActionIcon,
+  Box,
+  Text,
+  Button,
+  Select
+} from '@mantine/core'
+import { randomId } from '@mantine/hooks'
+import { IconTrash } from '@tabler/icons-react'
 
 const BackendTemplate = memo((props: { data: any; useAuth: boolean }) => {
-  const { data, useAuth } = props;
+  const { data, useAuth } = props
 
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      employees: [{ name: 'name', type: 'String', key: randomId() }],
-    },
-  });
+      employees: [{ name: 'name', type: 'String', key: randomId() }]
+    }
+  })
 
   const fields = form.getValues().employees.map((item, index) => (
     <Group key={item.key} mt="xs">
@@ -30,20 +38,23 @@ const BackendTemplate = memo((props: { data: any; useAuth: boolean }) => {
         key={form.key(`employees.${index}.type`)}
         {...form.getInputProps(`employees.${index}.type`)}
       />
-      <ActionIcon color="red" onClick={() => form.removeListItem('employees', index)}>
+      <ActionIcon
+        color="red"
+        onClick={() => form.removeListItem('employees', index)}
+      >
         <IconTrash size={16} />
       </ActionIcon>
     </Group>
-  ));
+  ))
 
-  const name = data.templateName.toLowerCase();
+  const name = data.templateName.toLowerCase()
 
   // 动态生成代码
   const generateExampleCode = () => {
-    const employees = form.getValues().employees;
+    const employees = form.getValues().employees
     const parameters = employees
-      .map((item) => `        ${item.name}: ${item.type}(body.${item.name})`)
-      .join(',\n'); // 使用 join 避免多余逗号
+      .map(item => `        ${item.name}: ${item.type}(body.${item.name})`)
+      .join(',\n') // 使用 join 避免多余逗号
 
     return `
 import { NextRequest } from "next/server";
@@ -54,11 +65,7 @@ import { cookies } from 'next/headers';
 export async function POST(request: NextRequest) {
   useServerTool.setRequest(request);
 
-${
-  useAuth
-    ? `  const cookieStore = await cookies();`
-    : ''
-}
+${useAuth ? `  const cookieStore = await cookies();` : ''}
 
   try {
 ${
@@ -107,8 +114,8 @@ ${parameters}
     });
   }
 }
-`;
-  };
+`
+  }
 
   return (
     <div className="flex">
@@ -142,7 +149,11 @@ ${parameters}
           <Group justify="center" mt="md">
             <Button
               onClick={() =>
-                form.insertListItem('employees', { name: '', type: 'string', key: randomId() })
+                form.insertListItem('employees', {
+                  name: '',
+                  type: 'string',
+                  key: randomId()
+                })
               }
             >
               新增参数
@@ -151,9 +162,9 @@ ${parameters}
         </Box>
       </div>
     </div>
-  );
-});
+  )
+})
 
-BackendTemplate.displayName = 'BackendTemplate';
+BackendTemplate.displayName = 'BackendTemplate'
 
-export default BackendTemplate;
+export default BackendTemplate

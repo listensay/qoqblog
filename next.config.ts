@@ -1,21 +1,21 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: "standalone",
+  output: 'standalone',
   async headers() {
     return [
       {
-        source: "/(.*)",
+        source: '/(.*)',
         headers: [
           {
-            key: "Access-Control-Allow-Origin",
-            value: "*",
-          },
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          }
         ]
       }
     ]
   }
-};
+}
 
-export default nextConfig;
+export default nextConfig

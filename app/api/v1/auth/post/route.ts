@@ -1,8 +1,8 @@
 // 查询数据 GET
-import { NextRequest } from "next/server";
-import { useServerTool } from "~/utils/useServerTool";
-import prisma from "~/utils/usePrisma";
-import { cookies } from 'next/headers';
+import { NextRequest } from 'next/server'
+import { useServerTool } from '~/utils/useServerTool'
+import prisma from '~/utils/usePrisma'
+import { cookies } from 'next/headers'
 
 export async function GET(request: NextRequest) {
   useServerTool.setRequest(request)
@@ -10,28 +10,27 @@ export async function GET(request: NextRequest) {
   const cookieStore = await cookies()
 
   try {
-
     const user = await useServerTool.useAuth()
 
-    if(!user) {
+    if (!user) {
       cookieStore.delete('token')
       return useServerTool.responseError({
-        message: "未登录",
+        message: '未登录',
         status: 401
       })
     }
-  
+
     const body = useServerTool.getParams()
 
-    if(Object.keys(body).length === 0) {
+    if (Object.keys(body).length === 0) {
       return useServerTool.responseError({
-        message: "参数错误"
+        message: '参数错误'
       })
     }
 
-    if(!body.page || !body.pageSize) {
+    if (!body.page || !body.pageSize) {
       return useServerTool.responseError({
-        message: "参数错误"
+        message: '参数错误'
       })
     }
 
@@ -49,21 +48,21 @@ export async function GET(request: NextRequest) {
           select: {
             name: true,
             description: true,
-            cover: true,
+            cover: true
           }
         },
         author: {
           select: {
             nickname: true,
-            avatar: true,
+            avatar: true
           }
-        },
+        }
       }
     })
 
-    if(!posts) {
+    if (!posts) {
       return useServerTool.responseError({
-        message: "没有内容"
+        message: '没有内容'
       })
     }
 
@@ -77,7 +76,7 @@ export async function GET(request: NextRequest) {
     })
   } catch {
     return useServerTool.responseError({
-      message: "系统错误",
+      message: '系统错误',
       status: 500
     })
   }

@@ -1,93 +1,99 @@
-'use client';
+'use client'
 
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import '@mantine/tiptap/styles.css';
-import Highlight from '@tiptap/extension-highlight';
-import Underline from '@tiptap/extension-underline';
-import EditorImage from '@tiptap/extension-image'; // 新增导入 Image 扩展
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { RichTextEditor } from '@mantine/tiptap';
-import { Button, Group, Textarea, TextInput, Text, Tabs } from '@mantine/core';
-import { hasLength, useForm } from '@mantine/form';
-import myRequest from '~/utils/myRequest';
-import { fetchGetPost, fetchInsertPost, fetchUpdatePost } from '~/services/posts';
-import { notifications } from '@mantine/notifications';
-import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import BlogItem from '~/components/BlogItem';
-import Image from 'next/image';
+import React, { memo, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import '@mantine/tiptap/styles.css'
+import Highlight from '@tiptap/extension-highlight'
+import Underline from '@tiptap/extension-underline'
+import EditorImage from '@tiptap/extension-image' // 新增导入 Image 扩展
+import { useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import { RichTextEditor } from '@mantine/tiptap'
+import { Button, Group, Textarea, TextInput, Text, Tabs } from '@mantine/core'
+import { hasLength, useForm } from '@mantine/form'
+import myRequest from '~/utils/myRequest'
+import {
+  fetchGetPost,
+  fetchInsertPost,
+  fetchUpdatePost
+} from '~/services/posts'
+import { notifications } from '@mantine/notifications'
+import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react'
+import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
+import BlogItem from '~/components/BlogItem'
+import Image from 'next/image'
 
 const CustomImage = EditorImage.extend({
   parseHTML() {
     return [
       {
-        tag: 'img[src^="data:image"]',
+        tag: 'img[src^="data:image"]'
       },
       {
-        tag: 'img[src]',
-      },
-    ];
-  },
-});
-
+        tag: 'img[src]'
+      }
+    ]
+  }
+})
 
 const Page = memo(({ params }: any) => {
-  const router = useRouter();
-  const { id } = React.use(params) as any;
+  const router = useRouter()
+  const { id } = React.use(params) as any
 
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
       title: '',
-      description: '',
+      description: ''
     },
     validate: {
       title: hasLength({ min: 3 }, 'Title must be 3 characters long'),
-      description: hasLength({ min: 3 }, 'Description must be 3 characters long'),
-    },
-  });
+      description: hasLength(
+        { min: 3 },
+        'Description must be 3 characters long'
+      )
+    }
+  })
 
-  const [content, setContent] = useState('');
-  const [cover, setCover] = useState('');
-  const [title, setTitle] = useState('');
-  const [loading, setLoading] = useState(false);
-  const openRef = useRef<() => void>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [content, setContent] = useState('')
+  const [cover, setCover] = useState('')
+  const [title, setTitle] = useState('')
+  const [loading, setLoading] = useState(false)
+  const openRef = useRef<() => void>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // 初始化编辑器，并加入 Image 扩展
   const editor = useEditor({
     content: '',
     extensions: [StarterKit, Underline, Highlight, CustomImage],
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
+      setContent(editor.getHTML())
     },
-    immediatelyRender: false,
-  });
+    immediatelyRender: false
+  })
 
   // 加载文章内容
   useEffect(() => {
     if (id > 0) {
       fetchGetPost(id)
-        .then((res) => {
-          const { data } = res as any;
-          setContent(data.post.content);
-          setCover(data.post.cover);
+        .then(res => {
+          const { data } = res as any
+          setContent(data.post.content)
+          setCover(data.post.cover)
           form.setValues({
             title: data.post.title,
-            description: data.post.description,
-          });
+            description: data.post.description
+          })
           if (editor) {
-            editor.commands.setContent(data.post.content);
+            editor.commands.setContent(data.post.content)
           }
         })
-        .catch((error) => {
-          console.error('Failed to fetch post:', error);
-        });
+        .catch(error => {
+          console.error('Failed to fetch post:', error)
+        })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, editor]);
+  }, [id, editor])
 
   const submit = async (values: typeof form.values) => {
     try {
@@ -98,101 +104,124 @@ const Page = memo(({ params }: any) => {
           description: values.description,
           content: content,
           categoryId: 1,
-          cover,
-        });
+          cover
+        })
         notifications.show({
           title: 'Post updated',
           message: 'Post has been updated successfully',
           color: 'green',
-          autoClose: 3000,
-        });
-        router.push('/dashboard/post');
+          autoClose: 3000
+        })
+        router.push('/dashboard/post')
       } else {
         await fetchInsertPost({
           title: values.title,
           description: values.description,
           content: content,
           categoryId: 1,
-          cover,
-        });
+          cover
+        })
         notifications.show({
           title: 'Post created',
           message: 'Post has been created successfully',
           color: 'green',
-          autoClose: 3000,
-        });
-        router.push('/dashboard/post');
+          autoClose: 3000
+        })
+        router.push('/dashboard/post')
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const generateSummary = () => {
-    setLoading(true);
-    const clearContent = content.replace(/<[^>]+>/g, '');
+    setLoading(true)
+    const clearContent = content.replace(/<[^>]+>/g, '')
     try {
-      myRequest.get('/v1/ai', {
-        content: clearContent,
-        title,
-      })
-      .then((res) => {
-          const description = JSON.parse(`"${res.data.message}"`);
-          form.setValues({ description });
-          setLoading(false);
-        });
+      myRequest
+        .get('/v1/ai', {
+          content: clearContent,
+          title
+        })
+        .then(res => {
+          const description = JSON.parse(`"${res.data.message}"`)
+          form.setValues({ description })
+          setLoading(false)
+        })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const dropHandle = async (files: File[]) => {
     const images = await Promise.all(
       files.map(
-        (file) =>
+        file =>
           new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
-            reader.readAsDataURL(file);
+            const reader = new FileReader()
+            reader.onload = () => resolve(reader.result as string)
+            reader.onerror = error => reject(error)
+            reader.readAsDataURL(file)
           })
       )
-    );
+    )
 
-    console.log(images.length);
-    setCover(images[0]);
-  };
+    console.log(images.length)
+    setCover(images[0])
+  }
 
   const coverRander = () => {
     if (cover) {
       return (
         <div>
           <div onClick={() => openRef.current?.()}>
-            <Image src={cover} width={300} height={300} alt="Cover" style={{ maxWidth: '100%', maxHeight: '300px' }} />
+            <Image
+              src={cover}
+              width={300}
+              height={300}
+              alt="Cover"
+              style={{ maxWidth: '100%', maxHeight: '300px' }}
+            />
           </div>
         </div>
-      );
+      )
     }
 
     return (
       <Dropzone
         openRef={openRef}
-        onDrop={(files) => dropHandle(files)}
+        onDrop={files => dropHandle(files)}
         onReject={() =>
-          notifications.show({ message: '请检查文件大小', title: '文件上传失败' })
+          notifications.show({
+            message: '请检查文件大小',
+            title: '文件上传失败'
+          })
         }
         maxSize={5 * 1024 ** 2}
         accept={IMAGE_MIME_TYPE}
       >
-        <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
+        <Group
+          justify="center"
+          gap="xl"
+          mih={220}
+          style={{ pointerEvents: 'none' }}
+        >
           <Dropzone.Accept>
-            <IconUpload size={52} color="var(--mantine-color-blue-6)" stroke={1.5} />
+            <IconUpload
+              size={52}
+              color="var(--mantine-color-blue-6)"
+              stroke={1.5}
+            />
           </Dropzone.Accept>
           <Dropzone.Reject>
             <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5} />
           </Dropzone.Reject>
           <Dropzone.Idle>
-            <IconPhoto size={52} color="var(--mantine-color-dimmed)" stroke={1.5} />
+            <IconPhoto
+              size={52}
+              color="var(--mantine-color-dimmed)"
+              stroke={1.5}
+            />
           </Dropzone.Idle>
           <div>
             <Text size="xl" inline>
@@ -204,29 +233,29 @@ const Page = memo(({ params }: any) => {
           </div>
         </Group>
       </Dropzone>
-    );
-  };
+    )
+  }
 
   // 新增：处理图片上传，并将图片以 base64 格式插入到编辑器中
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file && editor) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = () => {
-        const base64 = reader.result as string;
-        editor.chain().focus().setImage({ src: base64 }).run();
-      };
-      reader.onerror = (error) => {
-        console.error('图片读取错误：', error);
-      };
-      reader.readAsDataURL(file);
+        const base64 = reader.result as string
+        editor.chain().focus().setImage({ src: base64 }).run()
+      }
+      reader.onerror = error => {
+        console.error('图片读取错误：', error)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   // 当点击“插入图片”按钮时，触发隐藏的 input
   const triggerImageUpload = () => {
-    fileInputRef.current?.click();
-  };
+    fileInputRef.current?.click()
+  }
 
   return (
     <div>
@@ -237,9 +266,7 @@ const Page = memo(({ params }: any) => {
         </Tabs.List>
 
         <Tabs.Panel value="cover">
-          <div className="py-4">
-            {coverRander()}
-          </div>
+          <div className="py-4">{coverRander()}</div>
         </Tabs.Panel>
 
         <Tabs.Panel value="post">
@@ -249,16 +276,16 @@ const Page = memo(({ params }: any) => {
         </Tabs.Panel>
       </Tabs>
 
-      <form onSubmit={form.onSubmit((values) => submit(values))}>
+      <form onSubmit={form.onSubmit(values => submit(values))}>
         <TextInput
           withAsterisk
           label="标题"
           placeholder="请输入文章标题"
           {...form.getInputProps('title')}
           className="mb-4"
-          onChange={(event) => {
-            setTitle(event.target.value);
-            form.setValues({ title: event.target.value });
+          onChange={event => {
+            setTitle(event.target.value)
+            form.setValues({ title: event.target.value })
           }}
         />
 
@@ -309,9 +336,9 @@ const Page = memo(({ params }: any) => {
         </Group>
       </form>
     </div>
-  );
-});
+  )
+})
 
 Page.displayName = 'AuthPostEditor'
 
-export default Page;
+export default Page

@@ -1,6 +1,6 @@
-import prisma from "~/utils/usePrisma";
-import { useServerTool } from "~/utils/useServerTool";
-import { NextRequest } from "next/server";
+import prisma from '~/utils/usePrisma'
+import { useServerTool } from '~/utils/useServerTool'
+import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
 const { hashSync } = bcrypt
 
@@ -17,9 +17,9 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    if(user) {
+    if (user) {
       return useServerTool.responseError({
-        message: "用户名已存在"
+        message: '用户名已存在'
       })
     }
 
@@ -30,9 +30,9 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    if(email) {
+    if (email) {
       return useServerTool.responseError({
-        message: "邮箱已存在"
+        message: '邮箱已存在'
       })
     }
 
@@ -49,16 +49,16 @@ export async function POST(request: NextRequest) {
         }
       })
       return useServerTool.responseSuccess({
-        message: "注册成功"
+        message: '注册成功'
       })
     } catch {
       return useServerTool.responseError({
-        message: "注册失败"
+        message: '注册失败'
       })
     }
   } catch {
     return useServerTool.responseError({
-      message: "系统错误",
+      message: '系统错误',
       status: 400
     })
   }

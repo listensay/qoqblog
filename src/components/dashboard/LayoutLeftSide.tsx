@@ -2,13 +2,12 @@ import React, { memo } from 'react'
 import Link from 'next/link'
 
 interface IMenu {
-  name: string,
-  icon: string,
-  path: string,
+  name: string
+  icon: string
+  path: string
 }
 
 const Page = memo(() => {
-
   const menu: IMenu[] = [
     {
       name: '仪表盘',
@@ -30,15 +29,13 @@ const Page = memo(() => {
   return (
     <div>
       <ul>
-        {
-          menu.map(item => {
-            return (
-              <li key={item.path}>
-                <Link href={ '/dashboard' + item.path }>{ item.name }</Link>
-              </li>
-            )
-          })
-        }
+        {menu.map(item => {
+          return (
+            <li key={item.path}>
+              <Link href={'/dashboard' + item.path}>{item.name}</Link>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

@@ -1,8 +1,8 @@
-import { useServerTool } from '~/utils/useServerTool';
-import { NextRequest } from "next/server";
-import { cookies } from 'next/headers';
+import { useServerTool } from '~/utils/useServerTool'
+import { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
 
-export async function GET(request: NextRequest){
+export async function GET(request: NextRequest) {
   const cookieStore = await cookies()
 
   try {

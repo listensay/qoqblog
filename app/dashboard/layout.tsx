@@ -1,18 +1,16 @@
 'use client'
 
 import React, { memo } from 'react'
-import { AppShell, Group } from '@mantine/core';
-import LayoutLeftSide from "@/components/dashboard/LayoutLeftSide"
-import LayoutRightSide from "@/components/dashboard/LayoutRightSide"
-
+import { AppShell, Group } from '@mantine/core'
+import LayoutLeftSide from '@/components/dashboard/LayoutLeftSide'
+import LayoutRightSide from '@/components/dashboard/LayoutRightSide'
 
 const layout = memo(({ children }: { children: React.ReactNode }) => {
-
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: 'sm'}}
-      aside={{ width: 300, breakpoint: 'sm'}}
+      navbar={{ width: 300, breakpoint: 'sm' }}
+      aside={{ width: 300, breakpoint: 'sm' }}
       transitionDuration={0}
       padding="md"
     >
@@ -29,7 +27,7 @@ const layout = memo(({ children }: { children: React.ReactNode }) => {
         <LayoutRightSide />
       </AppShell.Aside>
 
-      <AppShell.Main className='bg-white'>{ children }</AppShell.Main>
+      <AppShell.Main className="bg-white">{children}</AppShell.Main>
     </AppShell>
   )
 })

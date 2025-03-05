@@ -1,30 +1,30 @@
 import React, { memo } from 'react'
-import { CodeHighlight } from '@mantine/code-highlight';
+import { CodeHighlight } from '@mantine/code-highlight'
 
-const BackendTemplate = memo((props: { data: any, useAuth: boolean }) => {
-
+const BackendTemplate = memo((props: { data: any; useAuth: boolean }) => {
   const { data, useAuth } = props
-  
+
   const name = data.templateName.toLowerCase()
 
   const exampleCode = `
 import { NextRequest } from "next/server";
 import { useServerTool } from "~/utils/useServerTool";
 import prisma from "~/utils/usePrisma";
-${
-useAuth ? `import { cookies } from 'next/headers';`: ''
-}
+${useAuth ? `import { cookies } from 'next/headers';` : ''}
 
 export async function GET(request: NextRequest) {
   useServerTool.setRequest(request)
 ${
-  useAuth ? `
-  const cookieStore = await cookies()`: ''
+  useAuth
+    ? `
+  const cookieStore = await cookies()`
+    : ''
 }
 
   try {
 ${
-  useAuth ? `
+  useAuth
+    ? `
     const user = await useServerTool.useAuth()
 
     if(!user) {
@@ -34,7 +34,8 @@ ${
         status: 401
       })
     }
-  `: ``
+  `
+    : ``
 }
     const body = useServerTool.getParams()
 
@@ -82,7 +83,7 @@ ${
     })
   }
 }
-`;
+`
 
   return (
     <div>
@@ -91,7 +92,7 @@ ${
         language="tsx"
         copyLabel="Copy button code"
         copiedLabel="Copied!"
-        className='flex-1'
+        className="flex-1"
       />
     </div>
   )

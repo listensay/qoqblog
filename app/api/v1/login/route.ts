@@ -1,10 +1,10 @@
-import { useServerTool } from "~/utils/useServerTool";
-import { NextRequest } from "next/server";
+import { useServerTool } from '~/utils/useServerTool'
+import { NextRequest } from 'next/server'
 import bcrypt from 'bcryptjs'
-import prisma from "~/utils/usePrisma";
+import prisma from '~/utils/usePrisma'
 const { compare } = bcrypt
 import jwt from 'jsonwebtoken'
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers'
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,25 +18,29 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    if(!user) {
+    if (!user) {
       return useServerTool.responseError({
-        message: "用户名不存在"
+        message: '用户名不存在'
       })
     }
 
     const isTheSame = await compare(body.password, user.password)
-    if(!isTheSame) {
+    if (!isTheSame) {
       return useServerTool.responseError({
-        message: "密码错误"
+        message: '密码错误'
       })
     }
 
-    const token = jwt.sign({
-      id: user.id,
-      username: user.username
-    }, process.env.JWT_SECRET as string, {
-      expiresIn: '24h'
-    })
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username
+      },
+      process.env.JWT_SECRET as string,
+      {
+        expiresIn: '24h'
+      }
+    )
 
     const cookieStore = await cookies()
     cookieStore.set('token', token, {

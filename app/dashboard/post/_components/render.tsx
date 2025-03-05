@@ -1,16 +1,15 @@
 'use client'
 
 import React, { memo, useEffect, useState } from 'react'
-import { Button, LoadingOverlay, Pagination, Table } from '@mantine/core';
-import { fetchDeletePost, fetchGetAuthPosts } from '@/service/posts';
-import dayjs from 'dayjs';
-import Link from 'next/link';
-import { notifications } from '@mantine/notifications';
+import { Button, LoadingOverlay, Pagination, Table } from '@mantine/core'
+import { fetchDeletePost, fetchGetAuthPosts } from '@/service/posts'
+import dayjs from 'dayjs'
+import Link from 'next/link'
+import { notifications } from '@mantine/notifications'
 
 const list = memo(() => {
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
-
 
   const getLists = async () => {
     setLoading(true)
@@ -28,42 +27,47 @@ const list = memo(() => {
     if (result?.success) {
       await getLists()
       notifications.show({
-        title: "删除成功",
-        message: "删除成功",
+        title: '删除成功',
+        message: '删除成功'
       })
     }
   }
-  
+
   const rows = list?.map((item: any) => (
     <Table.Tr key={item.id}>
-      <Table.Td align='center'>
-        <Link href={`/dashboard/post/${item.id}`} className='mr-2 text-blue-500'>
+      <Table.Td align="center">
+        <Link
+          href={`/dashboard/post/${item.id}`}
+          className="mr-2 text-blue-500"
+        >
           {item.title}
         </Link>
       </Table.Td>
       <Table.Td>{item.views}</Table.Td>
       <Table.Td>{item.likes}</Table.Td>
       <Table.Td>{item.category.name}</Table.Td>
-      <Table.Td align='center'>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Table.Td>
-      <Table.Td width={ '150'} align='center'>
+      <Table.Td align="center">
+        {dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+      </Table.Td>
+      <Table.Td width={'150'} align="center">
         <Button
           variant="light"
           color="red"
           size="xs"
           onClick={() => {
-            deleteHandle(item.id);
+            deleteHandle(item.id)
           }}
         >
           删除
         </Button>
       </Table.Td>
     </Table.Tr>
-  ));
+  ))
 
   return (
     <div>
       <LoadingOverlay visible={loading} />
-      <div className='border rounded-md'>
+      <div className="border rounded-md">
         <Table striped highlightOnHover withColumnBorders>
           <Table.Thead>
             <Table.Tr>
@@ -75,11 +79,9 @@ const list = memo(() => {
               <Table.Th>操作</Table.Th>
             </Table.Tr>
           </Table.Thead>
-          <Table.Tbody>
-            {rows}
-          </Table.Tbody>
+          <Table.Tbody>{rows}</Table.Tbody>
         </Table>
-        <Pagination total={10} className='mt-4' />
+        <Pagination total={10} className="mt-4" />
       </div>
     </div>
   )
