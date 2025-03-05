@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { useServerTool } from "~@/utils/useServerTool";
+import { useServerTool } from "~/utils/useServerTool";
 import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {

@@ -1,4 +1,4 @@
-import myRequest from "~@/utils/myRequest"
+import myRequest from "~/utils/myRequest"
 
 export const getDatabaseTables = async () => {
   const result = await myRequest.get('/v1/auth/code/database/tables')

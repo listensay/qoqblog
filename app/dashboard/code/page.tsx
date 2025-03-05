@@ -3,7 +3,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Button, Table, SegmentedControl } from '@mantine/core';
 import React, { memo, useEffect, useState } from 'react'
-import { getDatabaseTableColumns, getDatabaseTables } from '@/service/code';
+import { getDatabaseTableColumns, getDatabaseTables } from '~/services/code';
 import ControlUI from './_components/control-ui';
 import ControlBackend from './_components/control-backend';
 import ControlFrontend from './_components/control-frontend';

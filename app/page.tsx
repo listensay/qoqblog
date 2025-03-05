@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic"
 
 import { Suspense } from "react";
-import BlogList from "./components/BlogList";
-import HeaderLayout from "./components/HeaderLayout";
-import { fetchGetPosts } from "@/service/posts";
+import BlogList from "~/components/BlogList";
+import HeaderLayout from "~/components/HeaderLayout";
+import { fetchGetPosts } from "~/services/posts";
 
 export interface BlogListPost {
   id: number;

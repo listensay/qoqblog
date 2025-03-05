@@ -11,12 +11,12 @@ import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
 import { Button, Group, Textarea, TextInput, Text, Tabs } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
-import myRequest from '~@/utils/myRequest';
-import { fetchGetPost, fetchInsertPost, fetchUpdatePost } from '@/service/posts';
+import myRequest from '~/utils/myRequest';
+import { fetchGetPost, fetchInsertPost, fetchUpdatePost } from '~/services/posts';
 import { notifications } from '@mantine/notifications';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import BlogItem from '@/components/BlogItem';
+import BlogItem from '~/components/BlogItem';
 import Image from 'next/image';
 
 const CustomImage = EditorImage.extend({

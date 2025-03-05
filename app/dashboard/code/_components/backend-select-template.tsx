@@ -9,8 +9,8 @@ const BackendTemplate = memo((props: { data: any, useAuth: boolean }) => {
 
   const exampleCode = `
 import { NextRequest } from "next/server";
-import { useServerTool } from "~@/utils/useServerTool";
-import prisma from "~@/utils/usePrisma";
+import { useServerTool } from "~/utils/useServerTool";
+import prisma from "~/utils/usePrisma";
 ${
 useAuth ? `import { cookies } from 'next/headers';`: ''
 }

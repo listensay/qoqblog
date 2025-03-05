@@ -1,4 +1,4 @@
-import { useFetchGetAuthProfile } from "@/service/user";
+import { useFetchGetAuthProfile } from "~/services/user";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getUserProfile = createAsyncThunk('user/getUserProfile', async () => {

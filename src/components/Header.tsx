@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import Menu from '@/components/HeaderMenu'
+import Menu from '~/components/HeaderMenu'
 import Image from 'next/image';
 
 const Header = memo(() => {

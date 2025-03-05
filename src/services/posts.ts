@@ -1,4 +1,4 @@
-import myRequest from "~@/utils/myRequest"
+import myRequest from "~/utils/myRequest"
 
 // 获取文章列表
 export const fetchGetPosts = async (page: number = 1, pageSize: number = 10) => {

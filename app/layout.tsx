@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 
-import "@/assets/styles/globals.css";
-import '@/assets/styles/nprogress.css';
+import "~/assets/styles/globals.css";
+import '~/assets/styles/nprogress.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/core/styles.css';
 import '@mantine/code-highlight/styles.css';
 
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import ProgressBar from "@/components/ProgressBar";
-import StoreProvider from "./StoreProvider";
+import ProgressBar from "~/components/ProgressBar";
+import StoreProvider from "~/providers/StoreProvider";
 
 export const metadata: Metadata = {
   title: "背影如正面",

@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { useServerTool } from "~@/utils/useServerTool";
+import { useServerTool } from "~/utils/useServerTool";
 
 export async function GET(request: NextRequest) {
 

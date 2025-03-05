@@ -1,4 +1,4 @@
-import HeaderLayout from '@/components/HeaderLayout'
+import HeaderLayout from '~/components/HeaderLayout'
 import React, { memo } from 'react'
 
 const page = memo(() => {

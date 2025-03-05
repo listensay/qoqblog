@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
-import { useServerTool } from "~@/utils/useServerTool";
-import prisma from "~@/utils/usePrisma";
+import { useServerTool } from "~/utils/useServerTool";
+import prisma from "~/utils/usePrisma";
 
 export async function GET(request: NextRequest) {
   useServerTool.setRequest(request)

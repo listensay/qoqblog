@@ -1,5 +1,5 @@
 import React from "react";
-import Navigateto from "@/components/Navigato";
+import Navigateto from "~/components/Navigato";
 import BlogItem from "./BlogItem";
 import { BlogListPost } from "@/page";
 

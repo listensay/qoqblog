@@ -1,7 +1,7 @@
 // 删除数据 POST
 import { NextRequest } from "next/server";
-import { useServerTool } from "~@/utils/useServerTool";
-import prisma from "~@/utils/usePrisma";
+import { useServerTool } from "~/utils/useServerTool";
+import prisma from "~/utils/usePrisma";
 import { cookies } from 'next/headers';
 
 export async function DELETE(request: NextRequest) {

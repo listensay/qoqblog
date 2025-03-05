@@ -1,5 +1,5 @@
-import HeaderLayout from '@/components/HeaderLayout'
-import { fetchGetPost } from '@/service/posts'
+import HeaderLayout from '~/components/HeaderLayout'
+import { fetchGetPost } from '~/services/posts'
 import React, { memo } from 'react'
 import dayjs from 'dayjs'
 
