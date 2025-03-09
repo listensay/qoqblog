@@ -2,7 +2,7 @@ import { notifications } from '@mantine/notifications'
 import axios, { Axios, AxiosResponse } from 'axios'
 import { MyResponseInterface } from './useServerTool'
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://127.0.0.1:3000'
+const baseURL = '/api'
 
 class useRequest {
   axios: Axios
