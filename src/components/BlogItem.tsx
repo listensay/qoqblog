@@ -8,7 +8,7 @@ const BlogItem = memo(
   }: {
     title: string
     color?: string
-    cover: string
+    cover: string | null
   }) => {
     if (cover) {
       return (
