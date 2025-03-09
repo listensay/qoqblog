@@ -2,7 +2,7 @@
 
 import React, { memo, useEffect, useState } from 'react'
 import { Button, LoadingOverlay, Pagination, Table } from '@mantine/core'
-import { fetchDeletePost, fetchGetAuthPosts } from '@/service/posts'
+import { fetchDeletePost, fetchGetAuthPosts } from '~/services/posts'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { notifications } from '@mantine/notifications'

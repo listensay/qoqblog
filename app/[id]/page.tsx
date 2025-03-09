@@ -1,5 +1,4 @@
 import HeaderLayout from '~/components/HeaderLayout'
-import { fetchGetPost } from '~/services/posts'
 import React, { memo } from 'react'
 import dayjs from 'dayjs'
 import prisma from '~/utils/usePrisma'

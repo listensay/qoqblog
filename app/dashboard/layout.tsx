@@ -2,8 +2,8 @@
 
 import React, { memo } from 'react'
 import { AppShell, Group } from '@mantine/core'
-import LayoutLeftSide from '@/components/dashboard/LayoutLeftSide'
-import LayoutRightSide from '@/components/dashboard/LayoutRightSide'
+import LayoutLeftSide from '~/components/dashboard/LayoutLeftSide'
+import LayoutRightSide from '~/components/dashboard/LayoutRightSide'
 
 const layout = memo(({ children }: { children: React.ReactNode }) => {
   return (

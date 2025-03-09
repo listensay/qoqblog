@@ -1,10 +1,10 @@
 'use client'
 
 import React, { memo, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { getUserProfile } from '@/store/features/users'
+import { useAppDispatch, useAppSelector } from '~/store/hooks'
+import { getUserProfile } from '~/store/features/users'
 import { Button } from '@mantine/core'
-import { fetchAuthLogout } from '@/service/user'
+import { fetchAuthLogout } from '~/services/user'
 import { notifications } from '@mantine/notifications'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
