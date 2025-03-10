@@ -2,12 +2,26 @@
 import { NextRequest } from 'next/server'
 import { useServerTool } from '~/utils/useServerTool'
 import prisma from '~/utils/usePrisma'
+import { cookies } from 'next/headers'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   useServerTool.setRequest(request)
+
+  const user = await useServerTool.useAuth()
+
+  const cookieStore = await cookies()
+
+  if (!user) {
+    cookieStore.delete('token')
+    return useServerTool.responseError({
+      message: '未登录',
+      status: 401
+    })
+  }
+
 
   try {
     const id = (await params).id
@@ -23,17 +37,6 @@ export async function GET(
         message: '没有内容'
       })
     }
-
-    await prisma.post.update({
-      where: {
-        id: Number(id)
-      },
-      data: {
-        views: {
-          increment: 1
-        }
-      }
-    })
 
     return useServerTool.responseSuccess({
       data: {

@@ -19,7 +19,7 @@ export const fetchGetPosts = async (
 // 获取文章内容
 export const fetchGetPost = async (id: number) => {
   try {
-    const result = myRequest.get(`/v1/posts/${id}`)
+    const result = myRequest.get(`/v1/auth/post/${id}`)
     return result
   } catch (error) {
     console.log(error)
