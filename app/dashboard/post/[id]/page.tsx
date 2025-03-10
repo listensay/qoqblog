@@ -43,15 +43,10 @@ const Page = memo(({ params }: any) => {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      title: '',
-      description: ''
+      title: ''
     },
     validate: {
-      title: hasLength({ min: 3 }, 'Title must be 3 characters long'),
-      description: hasLength(
-        { min: 3 },
-        'Description must be 3 characters long'
-      )
+      title: hasLength({ min: 3 }, 'Title must be 3 characters long')
     }
   })
 
@@ -61,6 +56,8 @@ const Page = memo(({ params }: any) => {
   const [loading, setLoading] = useState(false)
   const openRef = useRef<() => void>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const [description, setDescription] = useState('')
 
   // 初始化编辑器，并加入 Image 扩展
   const editor = useEditor({
@@ -74,34 +71,37 @@ const Page = memo(({ params }: any) => {
 
   // 加载文章内容
   useEffect(() => {
-    if (id > 0) {
-      fetchGetPost(id)
-        .then(res => {
+    const fetchPost = async () => {
+      if (id > 0) {
+        try {
+          const res = await fetchGetPost(id)
           const { data } = res as any
           setContent(data.post.content)
           setCover(data.post.cover)
           form.setValues({
-            title: data.post.title,
-            description: data.post.description
+            title: data.post.title
           })
+          setDescription(data.post.description)
           if (editor) {
             editor.commands.setContent(data.post.content)
           }
-        })
-        .catch(error => {
+        } catch (error) {
           console.error('Failed to fetch post:', error)
-        })
+        }
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    fetchPost()
   }, [id, editor])
 
+  // 提交表单
   const submit = async (values: typeof form.values) => {
     try {
       if (id > 0) {
         await fetchUpdatePost({
           id,
           title: values.title,
-          description: values.description,
+          description,
           content: content,
           categoryId: 1,
           cover
@@ -116,7 +116,7 @@ const Page = memo(({ params }: any) => {
       } else {
         await fetchInsertPost({
           title: values.title,
-          description: values.description,
+          description,
           content: content,
           categoryId: 1,
           cover
@@ -134,6 +134,7 @@ const Page = memo(({ params }: any) => {
     }
   }
 
+  // 生成摘要
   const generateSummary = () => {
     setLoading(true)
     const clearContent = content.replace(/<[^>]+>/g, '')
@@ -145,7 +146,7 @@ const Page = memo(({ params }: any) => {
         })
         .then(res => {
           const description = JSON.parse(`"${res.data.message}"`)
-          form.setValues({ description })
+          setDescription(description)
           setLoading(false)
         })
     } catch (error) {
@@ -153,6 +154,7 @@ const Page = memo(({ params }: any) => {
     }
   }
 
+  // 处理图片上传
   const dropHandle = async (files: File[]) => {
     const images = await Promise.all(
       files.map(
@@ -170,6 +172,7 @@ const Page = memo(({ params }: any) => {
     setCover(images[0])
   }
 
+  // 封面渲染
   const coverRander = () => {
     if (cover) {
       return (
@@ -187,6 +190,7 @@ const Page = memo(({ params }: any) => {
       )
     }
 
+    // 上传封面
     return (
       <Dropzone
         openRef={openRef}
@@ -252,7 +256,7 @@ const Page = memo(({ params }: any) => {
     }
   }
 
-  // 当点击“插入图片”按钮时，触发隐藏的 input
+  // 当点击"插入图片"按钮时，触发隐藏的 input
   const triggerImageUpload = () => {
     fileInputRef.current?.click()
   }
@@ -326,9 +330,12 @@ const Page = memo(({ params }: any) => {
         <Textarea
           label="描述"
           placeholder="描述"
-          withAsterisk
           disabled={loading}
-          {...form.getInputProps('description')}
+          value={description}
+          onChange={event => {
+            const value = event.currentTarget.value
+            setDescription(value)
+          }}
         />
 
         <Group justify="flex-end" mt="md">
