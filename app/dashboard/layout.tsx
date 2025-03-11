@@ -2,7 +2,7 @@
 
 import React, { memo } from 'react'
 import { AppShell, Group } from '@mantine/core'
-import LayoutLeftSide from '~/components/dashboard/LayoutLeftSide'
+import Menu from '~/components/Menu'
 import LayoutRightSide from '~/components/dashboard/LayoutRightSide'
 
 const layout = memo(({ children }: { children: React.ReactNode }) => {
@@ -19,8 +19,8 @@ const layout = memo(({ children }: { children: React.ReactNode }) => {
           <h1>QOQ 后台管理系统</h1>
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <LayoutLeftSide />
+      <AppShell.Navbar>
+        <Menu />
       </AppShell.Navbar>
 
       <AppShell.Aside p="md">
