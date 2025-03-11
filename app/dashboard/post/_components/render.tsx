@@ -35,7 +35,7 @@ const list = memo(() => {
 
   const rows = list?.map((item: any) => (
     <Table.Tr key={item.id}>
-      <Table.Td align="center">
+      <Table.Td>
         <Link
           href={`/dashboard/post/${item.id}`}
           className="mr-2 text-blue-500"
@@ -46,9 +46,7 @@ const list = memo(() => {
       <Table.Td>{item.views}</Table.Td>
       <Table.Td>{item.likes}</Table.Td>
       <Table.Td>{item.category.name}</Table.Td>
-      <Table.Td align="center">
-        {dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}
-      </Table.Td>
+      <Table.Td>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Table.Td>
       <Table.Td width={'150'} align="center">
         <Button
           variant="light"
@@ -67,7 +65,7 @@ const list = memo(() => {
   return (
     <div>
       <LoadingOverlay visible={loading} />
-      <div className="border rounded-md">
+      <div className="border rounded-md bg-white">
         <Table striped highlightOnHover withColumnBorders>
           <Table.Thead>
             <Table.Tr>
@@ -81,8 +79,8 @@ const list = memo(() => {
           </Table.Thead>
           <Table.Tbody>{rows}</Table.Tbody>
         </Table>
-        <Pagination total={10} className="mt-4" />
       </div>
+      <Pagination total={10} className="mt-4" />{' '}
     </div>
   )
 })

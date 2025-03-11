@@ -8,17 +8,17 @@ import LayoutRightSide from '~/components/dashboard/LayoutRightSide'
 const layout = memo(({ children }: { children: React.ReactNode }) => {
   return (
     <AppShell
-      header={{ height: 60 }}
+      // header={{ height: 60 }}
       navbar={{ width: 300, breakpoint: 'sm' }}
       aside={{ width: 300, breakpoint: 'sm' }}
       transitionDuration={0}
       padding="md"
     >
-      <AppShell.Header>
+      {/* <AppShell.Header>
         <Group h="100%" px="md">
           <h1>QOQ 后台管理系统</h1>
         </Group>
-      </AppShell.Header>
+      </AppShell.Header> */}
       <AppShell.Navbar>
         <Menu />
       </AppShell.Navbar>
@@ -27,7 +27,7 @@ const layout = memo(({ children }: { children: React.ReactNode }) => {
         <LayoutRightSide />
       </AppShell.Aside>
 
-      <AppShell.Main className="bg-white">{children}</AppShell.Main>
+      <AppShell.Main className=" bg-zinc-50">{children}</AppShell.Main>
     </AppShell>
   )
 })
