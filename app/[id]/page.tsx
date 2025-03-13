@@ -3,6 +3,7 @@ import React, { memo } from 'react'
 import dayjs from 'dayjs'
 import prisma from '~/utils/usePrisma'
 import { metadata } from '@/layout'
+import type { Metadata, ResolvingMetadata } from 'next'
 
 interface Post {
   id: number
@@ -10,6 +11,26 @@ interface Post {
   content: string | null
   views: number
   createdAt: Date
+  description: string | null
+}
+
+type Props = {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { id } = await params
+
+  const blog = await getPost(id)
+
+  return {
+    title: blog?.title,
+    description: blog?.description
+  }
 }
 
 const getPost = async (id: string): Promise<Post | null> => {
