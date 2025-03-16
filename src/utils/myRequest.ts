@@ -82,4 +82,5 @@ class useRequest {
   }
 }
 
-export default new useRequest()
+const myRequest = new useRequest()
+export default myRequest

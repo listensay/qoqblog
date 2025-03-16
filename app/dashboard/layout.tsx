@@ -1,7 +1,7 @@
 'use client'
 
 import React, { memo } from 'react'
-import { AppShell, Group } from '@mantine/core'
+import { AppShell } from '@mantine/core'
 import Menu from '~/components/Menu'
 import LayoutRightSide from '~/components/dashboard/LayoutRightSide'
 

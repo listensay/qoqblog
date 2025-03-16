@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 interface IMenu {
@@ -10,31 +10,36 @@ interface IMenu {
 const Page = memo(() => {
   const [active, setActive] = useState('')
 
-  const menu: IMenu[] = [
-    {
-      name: '仪表盘',
-      icon: 'home',
-      path: '/'
-    },
-    {
-      name: '文章',
-      icon: 'post',
-      path: '/post'
-    },
-    {
-      name: '代码生成',
-      icon: 'code',
-      path: '/code'
-    }
-  ]
+  const menu = useMemo<IMenu[]>(
+    () => [
+      {
+        name: '仪表盘',
+        icon: 'home',
+        path: '/'
+      },
+      {
+        name: '文章',
+        icon: 'post',
+        path: '/post'
+      },
+      {
+        name: '代码生成',
+        icon: 'code',
+        path: '/code'
+      }
+    ],
+    []
+  )
 
   const pathname = usePathname()
 
   useEffect(() => {
     menu.forEach(item => {
-      pathname.includes(item.path) && setActive(item.path)
+      if (pathname.includes(item.path)) {
+        setActive(item.path)
+      }
     })
-  }, [pathname])
+  }, [pathname, menu])
 
   const handleSetActive = (path: string) => {
     setActive(path)
