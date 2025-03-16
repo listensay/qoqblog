@@ -9,7 +9,15 @@ import EditorImage from '@tiptap/extension-image' // 新增导入 Image 扩展
 import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { RichTextEditor } from '@mantine/tiptap'
-import { Button, Group, Textarea, TextInput, Text, Tabs } from '@mantine/core'
+import {
+  Button,
+  Group,
+  Textarea,
+  TextInput,
+  Text,
+  Tabs,
+  LoadingOverlay
+} from '@mantine/core'
 import { hasLength, useForm } from '@mantine/form'
 import myRequest from '~/utils/myRequest'
 import {
@@ -43,10 +51,12 @@ const Page = memo(({ params }: any) => {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      title: ''
+      title: '',
+      description: ''
     },
     validate: {
-      title: hasLength({ min: 3 }, 'Title must be 3 characters long')
+      title: hasLength({ min: 3 }, '文章标题太短了'),
+      description: hasLength({ min: 3 }, '文章描述太短了')
     }
   })
 
@@ -56,8 +66,6 @@ const Page = memo(({ params }: any) => {
   const [loading, setLoading] = useState(false)
   const openRef = useRef<() => void>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const [description, setDescription] = useState('')
 
   // 初始化编辑器，并加入 Image 扩展
   const editor = useEditor({
@@ -79,9 +87,9 @@ const Page = memo(({ params }: any) => {
           setContent(data.post.content)
           setCover(data.post.cover)
           form.setValues({
-            title: data.post.title
+            title: data.post.title,
+            description: data.post.description
           })
-          setDescription(data.post.description)
           if (editor) {
             editor.commands.setContent(data.post.content)
           }
@@ -101,7 +109,7 @@ const Page = memo(({ params }: any) => {
         await fetchUpdatePost({
           id,
           title: values.title,
-          description,
+          description: values.description,
           content: content,
           categoryId: 1,
           cover
@@ -116,7 +124,7 @@ const Page = memo(({ params }: any) => {
       } else {
         await fetchInsertPost({
           title: values.title,
-          description,
+          description: values.description,
           content: content,
           categoryId: 1,
           cover
@@ -146,7 +154,9 @@ const Page = memo(({ params }: any) => {
         })
         .then(res => {
           const description = JSON.parse(`"${res.data.message}"`)
-          setDescription(description)
+          form.setValues({
+            description
+          })
           setLoading(false)
         })
     } catch (error) {
@@ -263,6 +273,7 @@ const Page = memo(({ params }: any) => {
 
   return (
     <div>
+      <LoadingOverlay visible={loading} />
       <Tabs defaultValue="cover">
         <Tabs.List>
           <Tabs.Tab value="cover">上传封面</Tabs.Tab>
@@ -331,11 +342,8 @@ const Page = memo(({ params }: any) => {
           label="描述"
           placeholder="描述"
           disabled={loading}
-          value={description}
-          onChange={event => {
-            const value = event.currentTarget.value
-            setDescription(value)
-          }}
+          withAsterisk
+          {...form.getInputProps('description')}
         />
 
         <Group justify="flex-end" mt="md">
