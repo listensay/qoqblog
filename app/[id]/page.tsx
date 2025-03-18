@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import prisma from '~/utils/usePrisma'
 import { metadata } from '@/layout'
 import type { Metadata } from 'next'
+import Comments from '~/components/comments'
 
 interface Post {
   id: number
@@ -82,6 +83,7 @@ const page = memo(async ({ params }: { params: Promise<{ id: string }> }) => {
             className="prose max-w-full mx-auto"
             dangerouslySetInnerHTML={{ __html: post.content || '' }}
           ></div>
+          <Comments />
         </div>
       </HeaderLayout>
     </div>
