@@ -14,6 +14,6 @@ export const getComments = async (
 }
 
 export const createComment = async (comment: Comment) => {
-  const comments = await myRequest.post('/v1/comments', comment)
+  const comments = await myRequest.post('/v1/comment', comment)
   return comments
 }

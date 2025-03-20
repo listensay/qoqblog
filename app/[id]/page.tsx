@@ -83,7 +83,7 @@ const page = memo(async ({ params }: { params: Promise<{ id: string }> }) => {
             className="prose max-w-full mx-auto"
             dangerouslySetInnerHTML={{ __html: post.content || '' }}
           ></div>
-          <Comments />
+          <Comments id={post.id} />
         </div>
       </HeaderLayout>
     </div>

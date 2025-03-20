@@ -13,7 +13,8 @@ export async function POST(request: NextRequest) {
       username: joi.string().required().trim(),
       email: joi.string().email().required().trim(),
       content: joi.string().required().trim(),
-      postId: joi.number().required()
+      postId: joi.number().required(),
+      url: joi.string().trim().empty('')
     })
 
     const { error } = schema.validate(body)
@@ -24,8 +25,15 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // 安全过滤 content
+    const content = body.content
+    const filteredContent = content.replace(/<[^>]*>/g, '')
+
     const comment = await prisma.comments.create({
-      data: body
+      data: {
+        ...body,
+        content: filteredContent
+      }
     })
 
     return useServerTool.responseSuccess({

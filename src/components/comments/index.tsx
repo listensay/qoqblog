@@ -1,6 +1,7 @@
 'use client'
 import { Avatar, Button, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import dayjs from 'dayjs'
 import React, { memo, useEffect, useState } from 'react'
 import { getComments, createComment } from '~/services/comment'
 
@@ -15,7 +16,7 @@ interface Comment {
   parentCommentId: number
 }
 
-const Comments = memo(() => {
+const Comments = memo(({ id }: { id: number }) => {
   const [loading, setLoading] = useState(false)
   const [comments, setComments] = useState<Comment[]>([])
   const form = useForm({
@@ -34,16 +35,28 @@ const Comments = memo(() => {
     }
   })
 
-  const submit = (values: any) => {
+  const submit = async (values: any) => {
     setLoading(true)
-    console.log(values)
-    setTimeout(() => {
-      setLoading(false)
-    }, 10000)
+    await handleSubmit(values)
+    setLoading(false)
+  }
+
+  const handleSubmit = async (values: any) => {
+    try {
+      const data = {
+        ...values,
+        postId: id
+      }
+
+      await createComment(data)
+      await fetchGetComments()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const fetchGetComments = async () => {
-    const res = await getComments(18, 1, 10)
+    const res = await getComments(id, 1, 10)
     setComments(res.data)
   }
 
@@ -85,21 +98,29 @@ const Comments = memo(() => {
           </Button>
         </form>
       </div>
-      <div className="mt-4">
-        {comments.map(comment => (
-          <div key={comment.id} className="flex gap-2">
-            <div>
-              <Avatar src={comment.avatar} />
+      <div className="mt-10">
+        {comments.length > 0 &&
+          comments.map(comment => (
+            <div key={comment.id} className="pb-4 mb-4">
+              <div className="flex gap-4 items-center">
+                <div>
+                  <Avatar size="md" radius="xl" src={comment.avatar} />
+                </div>
+                <div>
+                  <div className="text-lg">{comment.username}</div>
+                  <div className="text-sm text-gray-500">
+                    {dayjs(comment.createdAt).format('YYYY-MM-DD')}
+                  </div>
+                </div>
+              </div>
+              <div className="py-4">{comment.content}</div>
             </div>
-            <div>
-              <div>{comment.username}</div>
-              <div>{comment.content}</div>
-              <div>{comment.createdAt}</div>
-              <div>{comment.url}</div>
-              <div>{comment.parentCommentId}</div>
-            </div>
+          ))}
+        {comments.length === 0 && (
+          <div className="flex justify-center items-center h-full py-16 text-gray-500">
+            暂无评论
           </div>
-        ))}
+        )}
       </div>
     </div>
   )
