@@ -1,9 +1,10 @@
 'use client'
-import { Avatar, Button, Textarea, TextInput } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { Avatar } from '@mantine/core'
 import dayjs from 'dayjs'
 import React, { memo, useEffect, useState } from 'react'
-import { getComments, createComment } from '~/services/comment'
+import { getComments } from '~/services/comment'
+import Comment from './comment'
+import { IconMessageCircle } from '@tabler/icons-react'
 
 interface Comment {
   id: number
@@ -14,46 +15,97 @@ interface Comment {
   createdAt: string
   avatar: string
   parentCommentId: number
+  replies?: Comment[]
+}
+
+const MAX_REPLY_DEPTH = 2 // 设置最大回复层级
+
+const CommentItem = ({
+  comment,
+  postId,
+  onReply,
+  replyingTo,
+  refreshComments,
+  level = 0
+}: {
+  comment: Comment
+  postId: number
+  onReply: (comment: Comment) => void
+  replyingTo: number | null
+  refreshComments: () => Promise<void>
+  level?: number
+}) => {
+  return (
+    <div
+      className={`py-6 ${level > 0 ? 'ml-8 border-l-2 border-gray-100 pl-4' : ''}`}
+    >
+      <div className="flex gap-4 items-center">
+        <div>
+          <Avatar
+            size="md"
+            radius="xl"
+            src={comment.avatar}
+            className="cursor-pointer hover:opacity-80 transition-opacity duration-300"
+          />
+        </div>
+        <div>
+          <div className="text-sm">{comment.username}</div>
+          <div className="text-sm text-gray-500">
+            {dayjs(comment.createdAt).format('YYYY-MM-DD')}
+          </div>
+        </div>
+      </div>
+      <div className="py-4">
+        <div>{comment.content}</div>
+
+        {replyingTo === comment.id && (
+          <div className="mt-4 mb-2">
+            <Comment
+              id={postId}
+              replyComment={comment}
+              setShowReply={() => onReply(comment)}
+              refreshComments={async () => {
+                await refreshComments()
+                onReply({ ...comment, id: -1 })
+              }}
+            />
+          </div>
+        )}
+
+        {/* 只在允许的层级内显示回复按钮 */}
+        {level < MAX_REPLY_DEPTH && (
+          <div
+            className="text-sm text-gray-500 mt-4 flex items-center gap-2 cursor-pointer hover:text-gray-700"
+            onClick={() => onReply(comment)}
+          >
+            Reply
+          </div>
+        )}
+      </div>
+
+      {comment.replies && comment.replies.length > 0 && (
+        <div className="mt-4">
+          {comment.replies.map(reply => (
+            <CommentItem
+              key={reply.id}
+              comment={reply}
+              postId={postId}
+              onReply={onReply}
+              replyingTo={replyingTo}
+              refreshComments={refreshComments}
+              level={level + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 const Comments = memo(({ id }: { id: number }) => {
   const [loading, setLoading] = useState(false)
   const [comments, setComments] = useState<Comment[]>([])
-  const form = useForm({
-    mode: 'uncontrolled',
-    initialValues: {
-      email: '',
-      username: '',
-      url: '',
-      content: ''
-    },
-
-    validate: {
-      username: value => (value.length > 0 ? null : '用户名不能为空'),
-      email: value => (/^\S+@\S+$/.test(value) ? null : '邮箱格式不正确'),
-      content: value => (value.length > 0 ? null : '内容不能为空')
-    }
-  })
-
-  const submit = async (values: any) => {
-    setLoading(true)
-    await handleSubmit(values)
-    setLoading(false)
-  }
-
-  const handleSubmit = async (values: any) => {
-    try {
-      const data = {
-        ...values,
-        postId: id
-      }
-
-      await createComment(data)
-      await fetchGetComments()
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const [replyingTo, setReplyingTo] = useState<number | null>(null)
 
   const fetchGetComments = async () => {
     const res = await getComments(id, 1, 10)
@@ -61,60 +113,37 @@ const Comments = memo(({ id }: { id: number }) => {
   }
 
   useEffect(() => {
+    setLoading(true)
     fetchGetComments()
+    setLoading(false)
   }, [])
+
+  const handleReply = (comment: Comment) => {
+    setReplyingTo(replyingTo === comment.id ? null : comment.id)
+  }
 
   return (
     <div className="my-8 mt-16">
       <div className="text-2xl font-bold">Comments</div>
       <div className="mt-4">
-        <form onSubmit={form.onSubmit(values => submit(values))}>
-          <div className="flex gap-2 justify-between mb-4">
-            <TextInput
-              placeholder="Name"
-              {...form.getInputProps('username')}
-              className="w-1/3"
-            />
-            <TextInput
-              placeholder="Email"
-              {...form.getInputProps('email')}
-              className="w-1/3"
-            />
-            <TextInput
-              placeholder="Website"
-              {...form.getInputProps('url')}
-              className="w-1/3"
-            />
-          </div>
-          <Textarea
-            placeholder="Leave a comment"
-            {...form.getInputProps('content')}
-            minRows={5}
-            autosize
-            className="mb-4"
-          />
-          <Button type="submit" loading={loading}>
-            Submit
-          </Button>
-        </form>
+        <Comment
+          id={id}
+          refreshComments={fetchGetComments}
+          replyComment={null}
+          setShowReply={() => {}}
+        />
       </div>
       <div className="mt-10">
         {comments.length > 0 &&
           comments.map(comment => (
-            <div key={comment.id} className="pb-4 mb-4">
-              <div className="flex gap-4 items-center">
-                <div>
-                  <Avatar size="md" radius="xl" src={comment.avatar} />
-                </div>
-                <div>
-                  <div className="text-lg">{comment.username}</div>
-                  <div className="text-sm text-gray-500">
-                    {dayjs(comment.createdAt).format('YYYY-MM-DD')}
-                  </div>
-                </div>
-              </div>
-              <div className="py-4">{comment.content}</div>
-            </div>
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              postId={id}
+              onReply={handleReply}
+              replyingTo={replyingTo}
+              refreshComments={fetchGetComments}
+            />
           ))}
         {comments.length === 0 && (
           <div className="flex justify-center items-center h-full py-16 text-gray-500">

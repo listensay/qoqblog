@@ -24,9 +24,20 @@ export async function GET(request: NextRequest) {
       })
     }
 
+    const commentFace = {
+      id: true,
+      username: true,
+      email: true,
+      url: true,
+      content: true,
+      createdAt: true
+    }
+
     const comments = await prisma.comments.findMany({
       where: {
-        postId: Number(body.postId)
+        postId: Number(body.postId),
+        isDeleted: false,
+        parentCommentId: null // 只查询顶级评论
       },
       orderBy: {
         createdAt: 'desc'
@@ -34,20 +45,39 @@ export async function GET(request: NextRequest) {
       skip: (Number(body.page) - 1) * Number(body.limit),
       take: Number(body.limit),
       select: {
-        id: true,
-        username: true,
-        email: true,
-        url: true,
-        content: true,
-        createdAt: true,
-        parentCommentId: true
+        ...commentFace,
+        parentCommentId: true,
+        replies: {
+          where: { isDeleted: false },
+          select: {
+            ...commentFace,
+            parentCommentId: true,
+            replies: {
+              where: { isDeleted: false },
+              select: {
+                ...commentFace,
+                parentCommentId: true
+              }
+            }
+          },
+          orderBy: {
+            createdAt: 'desc'
+          }
+        }
       }
     })
 
-    const responseComments = comments.map(({ email, ...comment }) => ({
-      ...comment,
-      avatar: `https://cravatar.cn/avatar/${md5(email || '')}?d=mp`
-    }))
+    // 递归处理评论数据
+    const processComment = (comment: any) => {
+      const { email, replies, ...rest } = comment
+      return {
+        ...rest,
+        avatar: `https://cravatar.cn/avatar/${md5(email || '')}?d=mp`,
+        replies: replies ? replies.map(processComment) : []
+      }
+    }
+
+    const responseComments = comments.map(processComment)
 
     return useServerTool.responseSuccess({
       data: responseComments

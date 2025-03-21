@@ -14,7 +14,8 @@ export async function POST(request: NextRequest) {
       email: joi.string().email().required().trim(),
       content: joi.string().required().trim(),
       postId: joi.number().required(),
-      url: joi.string().trim().empty('')
+      url: joi.string().trim().empty(''),
+      parentCommentId: joi.number().empty('')
     })
 
     const { error } = schema.validate(body)
