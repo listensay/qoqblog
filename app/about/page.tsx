@@ -20,7 +20,7 @@ const page = memo(() => {
             <li>
               Node全栈开发者：Vue.js，React.js，Nuxtjs，Nextjs，Prisma，Mysql
             </li>
-            <li>卑微寻求工作中...</li>
+            {/* <li>卑微寻求工作中...</li> */}
           </ul>
         </div>
       </HeaderLayout>
