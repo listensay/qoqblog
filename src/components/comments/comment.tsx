@@ -103,4 +103,6 @@ const comment = memo(
   }
 )
 
+comment.displayName = 'Comment'
+
 export default comment

@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     return useServerTool.responseSuccess({
       data: comment
     })
-  } catch (error) {
+  } catch {
     return useServerTool.responseError({
       message: '服务器错误'
     })

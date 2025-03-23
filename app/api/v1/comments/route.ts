@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import prisma from '~/utils/usePrisma'
 import { useServerTool } from '~/utils/useServerTool'
 import joi from 'joi'
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
     return useServerTool.responseSuccess({
       data: responseComments
     })
-  } catch (error) {
+  } catch {
     return useServerTool.responseError({
       message: '服务器错误'
     })

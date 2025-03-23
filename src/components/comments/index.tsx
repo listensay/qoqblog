@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import React, { memo, useEffect, useState } from 'react'
 import { getComments } from '~/services/comment'
 import Comment from './comment'
-import { IconMessageCircle } from '@tabler/icons-react'
 
 interface Comment {
   id: number
@@ -103,7 +102,6 @@ const CommentItem = ({
 }
 
 const Comments = memo(({ id }: { id: number }) => {
-  const [loading, setLoading] = useState(false)
   const [comments, setComments] = useState<Comment[]>([])
   const [replyingTo, setReplyingTo] = useState<number | null>(null)
 
@@ -113,10 +111,8 @@ const Comments = memo(({ id }: { id: number }) => {
   }
 
   useEffect(() => {
-    setLoading(true)
     fetchGetComments()
-    setLoading(false)
-  }, [])
+  })
 
   const handleReply = (comment: Comment) => {
     setReplyingTo(replyingTo === comment.id ? null : comment.id)
@@ -154,5 +150,7 @@ const Comments = memo(({ id }: { id: number }) => {
     </div>
   )
 })
+
+Comments.displayName = 'Comments'
 
 export default Comments
