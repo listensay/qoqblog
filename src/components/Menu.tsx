@@ -23,6 +23,11 @@ const Page = memo(() => {
         path: '/post'
       },
       {
+        name: '分类',
+        icon: 'category',
+        path: '/category'
+      },
+      {
         name: '代码生成',
         icon: 'code',
         path: '/code'
