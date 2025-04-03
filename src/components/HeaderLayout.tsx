@@ -5,8 +5,8 @@ const HeaderLayout = memo(({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div>
-        <div className="mx-auto w-[900px] max-lg:p-4 max-md:p-0 max-lg:w-full">
-          <div className="shadow-md rounded-md overflow-hidden my-4 max-md:my-0 max-md:shadow-none max-md:rounded-none bg-white">
+        <div className="mx-auto py-4 w-[900px] max-lg:p-4 max-md:p-0 max-lg:w-full">
+          <div className="shadow-md rounded-md overflow-hidden max-md:my-0 max-md:shadow-none max-md:rounded-none bg-white">
             <header className="border-b">
               <Header />
             </header>

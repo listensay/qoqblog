@@ -112,7 +112,7 @@ const Comments = memo(({ id }: { id: number }) => {
 
   useEffect(() => {
     fetchGetComments()
-  })
+  }, [])
 
   const handleReply = (comment: Comment) => {
     setReplyingTo(replyingTo === comment.id ? null : comment.id)

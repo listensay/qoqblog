@@ -24,7 +24,9 @@ export default function RootLayout({ children }: Props) {
   return (
     <StoreProvider>
       <html lang="en">
-        <body className={`antialiased bg-indigo-50 max-sm:bg-white`}>
+        <body
+          className={`min-h-[100vh]  bg-[url(/gradient.jpg)] bg-cover bg-no-repeat`}
+        >
           <MantineProvider>
             <Notifications />
             <Suspense fallback={<div>Loading...</div>}>
